@@ -9,7 +9,9 @@ while true do
   time = Time.now
   dir = "images/#{time.strftime('%Y%m%d')}"
   FileUtils.mkdir_p dir
-  image_filename = "#{dir}/#{time.strftime('%Y%m%d_%H')}#{time.min - (time.min % 5)}.png"
+  minutes = (time.min - (time.min % 5)).to_s
+  minutes = "0#{minutes}" if minutes.size == 1
+  image_filename = "#{dir}/#{time.strftime('%Y%m%d_%H')}#{minutes}.png"
   radar_image = Net::HTTP.get('www.shmu.sk', relative_image_url)
   File.open(image_filename, 'wb'){|f| f.write radar_image}
   

@@ -48,6 +48,8 @@ $(function() {
     var playbackOptions = {
         playControl: true,
         dateControl: true,
+        speed: 5.0, // doesnt seem to influence the animation speed
+        tickLen: 2000,
         // layer and marker options
         layer: {
             pointToLayer: function(featureData, latlng) {

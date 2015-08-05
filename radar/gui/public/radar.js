@@ -119,7 +119,7 @@ $(function() {
 
             radarImageUrl = '../radar_image/' + current_radar_frame_timestamp;
             next_radar_overlay = L.imageOverlay(radarImageUrl, imageBounds);
-            next_radar_overlay.addTo(map).setOpacity(0.5);
+            next_radar_overlay.addTo(map).setOpacity(0.75);
             if (current_radar_overlay !== null) {
                 map.removeLayer(current_radar_overlay);
             }

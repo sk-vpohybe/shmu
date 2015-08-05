@@ -64,10 +64,10 @@ end
 
 get '/radar_image/:epoch_time_in_seconds' do
   t = Time.at params[:epoch_time_in_seconds].to_i
-  path_to_radar_image = "images/#{t.strftime('%Y%m%d')}/#{t.strftime('%Y%m%d_%H%M')}.png"
+  path_to_radar_image = "images/#{t.strftime('%Y%m%d')}/#{t.strftime('%Y%m%d_%H%M')}.gif"
   unless File.exists?("public/#{path_to_radar_image}") # display some random radar image when not found
     
-    path_to_radar_image = Dir.glob('public/images/**/*.png').sample.gsub 'public/', ''
+    path_to_radar_image = Dir.glob('public/images/**/*.gif').sample.gsub 'public/', ''
     puts "not found, altering to random image: #{path_to_radar_image}"
   end
   

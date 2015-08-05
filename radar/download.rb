@@ -16,6 +16,6 @@ while true do
   File.open(image_filename, 'wb'){|f| f.write radar_image}
   
   puts "downloaded: #{image_filename}"
-
+  `convert #{image_filename} no-clouds.png -compose Change-mask -composite #{image_filename.sub('png', 'gif')}`
   sleep 60*5
 end

@@ -53,7 +53,7 @@ get '/' do
         
         <form action="/upload_gpx" method="POST" enctype="multipart/form-data">
             <input type="file" name="file">
-            <input type="submit" value="Proceed">
+            <input type="submit" value="Proceed GPX File">
         </form>
     </div>
 

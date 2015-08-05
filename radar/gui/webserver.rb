@@ -100,7 +100,7 @@ get '/view/:unique_gpx_filename' do
 <html>
 
 <head>
-    <title>SHMU radary</title>
+    <title>SHMÚ radary + GPX: #{params[:unique_gpx_filename]}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" rel="stylesheet" type="text/css" />

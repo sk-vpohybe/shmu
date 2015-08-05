@@ -30,6 +30,7 @@ get '/' do
   <html>
     <head>
         <title>GPX + radar</title>
+        <link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'>
    <style>
 
     html { 
@@ -48,7 +49,7 @@ get '/' do
     </head>
     <body>
         <div style="background-color: white; opacity: 0.8; padding: 10px; display: block; margin-left: auto; margin-right: auto; width: 60%; border-radius: 10px; text-align:center">
-        <h1>SHMÚ Radar + GPX</h1>
+        <p style="font-size: 400%;"><span style="font-weight: 900">SHMÚ Radars</span><br /><span style="font-family: 'Mr Dafoe', cursive;">on Steroids</span></p>
         
         <form action="/upload_gpx" method="POST" enctype="multipart/form-data">
             <input type="file" name="file">
@@ -100,7 +101,7 @@ get '/view/:unique_gpx_filename' do
 <html>
 
 <head>
-    <title>SHMÚ radary + GPX: #{params[:unique_gpx_filename]}</title>
+    <title>SHMÚ Radars on Steroids: #{params[:unique_gpx_filename]}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" rel="stylesheet" type="text/css" />

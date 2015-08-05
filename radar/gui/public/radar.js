@@ -29,7 +29,7 @@ $(function() {
     var basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png');
 
     // Center map and default zoom level
-    map.setView([48.2713, 17.1346], 11);
+    map.setView([48.74157, 19.35118], 8);
 
     // Adds the background layer to the map
     map.addLayer(basemapLayer);
@@ -91,7 +91,6 @@ $(function() {
     }
     ;
 
-    radarImageUrl = 'file:///home/peter/Repositories/shmu/radar/images/20150804/20150804_175.png';
     imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
     current_radar_frame_timestamp = null;

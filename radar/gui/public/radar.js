@@ -119,7 +119,8 @@ $(function() {
         seconds_since_unix_epoch = parseInt(ms / 1000);
         upcoming_radar_overlay1_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
         upcoming_radar_overlay2_timestamp = upcoming_radar_overlay1_timestamp + 5 * 60;
-        attitude_towards_overlay2 = ((upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (5 * 60) + 0.5)/2;
+        attitude_towards_overlay2 = (upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (5 * 60);
+        
 
         if (upcoming_radar_overlay1_timestamp !== displayed_radar_overlay1_timestamp) {
             if (radar_overlay1)
@@ -131,8 +132,9 @@ $(function() {
             radar_overlay1.addTo(map);
         }
 
+        o1 = attitude_towards_overlay2;
         if (radar_overlay1)
-            radar_overlay1.setOpacity(attitude_towards_overlay2);
+            radar_overlay1.setOpacity(Math.sqrt(o1)*0.9);
 
         if (upcoming_radar_overlay2_timestamp !== displayed_radar_overlay2_timestamp) {
             if (radar_overlay2)
@@ -144,8 +146,10 @@ $(function() {
             radar_overlay2.addTo(map);
         }
 
+        o2 = (1.0 - attitude_towards_overlay2);
+
         if (radar_overlay2)
-            radar_overlay2.setOpacity(1.0 - attitude_towards_overlay2);
+            radar_overlay2.setOpacity(Math.sqrt(o2)*0.9);
     }
 });
 

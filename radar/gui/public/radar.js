@@ -134,7 +134,7 @@ $(function() {
 
         o1 = attitude_towards_overlay2;
         if (radar_overlay1)
-            radar_overlay1.setOpacity(Math.sqrt(o1)*0.9);
+            radar_overlay1.setOpacity(Math.sqrt(o1)*0.8);
 
         if (upcoming_radar_overlay2_timestamp !== displayed_radar_overlay2_timestamp) {
             if (radar_overlay2)
@@ -149,7 +149,7 @@ $(function() {
         o2 = (1.0 - attitude_towards_overlay2);
 
         if (radar_overlay2)
-            radar_overlay2.setOpacity(Math.sqrt(o2)*0.9);
+            radar_overlay2.setOpacity(Math.sqrt(o2)*0.8);
     }
 });
 

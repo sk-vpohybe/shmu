@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'sinatra'
 require 'active_support'
 require "active_support/core_ext"
@@ -28,14 +30,32 @@ get '/' do
   <html>
     <head>
         <title>GPX + radar</title>
+   <style>
+
+    html { 
+    background: url('../5288-rain-storm-wallpaper.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    }
+
+    body {
+     font-family: Tahoma, Geneva, sans-serif;
+    }
+
+</style>
     </head>
     <body>
-        <h1>Upload GPX file</h1>
+        <div style="background-color: white; opacity: 0.8; padding: 10px; display: block; margin-left: auto; margin-right: auto; width: 60%; border-radius: 10px; text-align:center">
+        <h1>SHMÚ Radar + GPX</h1>
         
         <form action="/upload_gpx" method="POST" enctype="multipart/form-data">
             <input type="file" name="file">
-            <input type="submit" value="Upload GPX">
+            <input type="submit" value="Proceed">
         </form>
+    </div>
+
     </body>
 </html>
 STRING
@@ -86,6 +106,7 @@ get '/view/:unique_gpx_filename' do
     <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" rel="stylesheet" type="text/css" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/vis/3.12.0/vis.min.css" rel="stylesheet" type="text/css" /> 
     <style>
+
     #map {
         position: absolute;
         top: 0;

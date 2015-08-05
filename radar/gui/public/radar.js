@@ -1,6 +1,10 @@
-current_radar_frame_timestamp = null;
-next_radar_frame_timestamp = null;
-current_radar_overlay = null;
+upcoming_radar_overlay1_timestamp = null;
+displayed_radar_overlay1_timestamp = null;
+upcoming_radar_overlay2_timestamp = null;
+displayed_radar_overlay2_timestamp = null;
+radar_overlay1 = null;
+radar_overlay2 = null;
+
 imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
 $(function() {
@@ -113,19 +117,35 @@ $(function() {
 
     function adjustRadarImage(ms) {
         seconds_since_unix_epoch = parseInt(ms / 1000);
-        next_radar_frame_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
-        if (current_radar_frame_timestamp !== next_radar_frame_timestamp) {
-            current_radar_frame_timestamp = next_radar_frame_timestamp;
+        upcoming_radar_overlay1_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
+        upcoming_radar_overlay2_timestamp = upcoming_radar_overlay1_timestamp + 5 * 60;
+        attitude_towards_overlay2 = ((upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (5 * 60) + 0.5)/2;
 
-            radarImageUrl = '../radar_image/' + current_radar_frame_timestamp;
-            next_radar_overlay = L.imageOverlay(radarImageUrl, imageBounds);
-            next_radar_overlay.addTo(map).setOpacity(0.75);
-            if (current_radar_overlay !== null) {
-                map.removeLayer(current_radar_overlay);
-            }
-            current_radar_overlay = next_radar_overlay;
+        if (upcoming_radar_overlay1_timestamp !== displayed_radar_overlay1_timestamp) {
+            if (radar_overlay1)
+                map.removeLayer(radar_overlay1);
 
+            displayed_radar_overlay1_timestamp = upcoming_radar_overlay1_timestamp;
+            radar_overlay1_image_url = '../radar_image/' + displayed_radar_overlay1_timestamp;
+            radar_overlay1 = L.imageOverlay(radar_overlay1_image_url, imageBounds);
+            radar_overlay1.addTo(map);
         }
+
+        if (radar_overlay1)
+            radar_overlay1.setOpacity(attitude_towards_overlay2);
+
+        if (upcoming_radar_overlay2_timestamp !== displayed_radar_overlay2_timestamp) {
+            if (radar_overlay2)
+                map.removeLayer(radar_overlay2);
+
+            displayed_radar_overlay2_timestamp = upcoming_radar_overlay2_timestamp;
+            radar_overlay2_image_url = '../radar_image/' + displayed_radar_overlay2_timestamp;
+            radar_overlay2 = L.imageOverlay(radar_overlay2_image_url, imageBounds);
+            radar_overlay2.addTo(map);
+        }
+
+        if (radar_overlay2)
+            radar_overlay2.setOpacity(1.0 - attitude_towards_overlay2);
     }
 });
 

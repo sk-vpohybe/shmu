@@ -52,7 +52,6 @@ $(function() {
     var playbackOptions = {
         playControl: true,
         dateControl: true,
-        speed: 5.0, // doesnt seem to influence the animation speed
         tickLen: 2000,
         // layer and marker options
         layer: {
@@ -85,10 +84,11 @@ $(function() {
     };
 
     // Initialize playback
-    var playback = new L.Playback(map, null, onPlaybackTimeChange, playbackOptions);
+    playback = new L.Playback(map, null, onPlaybackTimeChange, playbackOptions);
 
     playback.setData(demoTracks);
     playback.addData(trackToDisplay);
+    playback.setSpeed(500);
 
     // Uncomment to test data reset;
     //playback.setData(blueMountain);    

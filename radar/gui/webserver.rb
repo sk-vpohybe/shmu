@@ -59,7 +59,7 @@ post '/upload_gpx' do
   filename = params[:file][:filename]
   file = params[:file][:tempfile]
 
-  unique_gpx_filename = "#{timestamp}_#{filename}"
+  unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
   gpx = file.read
   File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
   

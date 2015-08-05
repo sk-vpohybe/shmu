@@ -1,3 +1,8 @@
+current_radar_frame_timestamp = null;
+next_radar_frame_timestamp = null;
+current_radar_overlay = null;
+imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
+
 $(function() {
 
     demoTracks = [trackToDisplay];
@@ -41,7 +46,7 @@ $(function() {
 
     // Playback options
     var playbackOptions = {
-        //playControl: true,
+        playControl: true,
         dateControl: true,
         // layer and marker options
         layer: {
@@ -85,36 +90,39 @@ $(function() {
     // Set timeline time change event, so cursor is set after moving custom time (blue)
     timeline.on('timechange', onCustomTimeChange);
 
-    // A callback so timeline is set after changing playback time
-    function onPlaybackTimeChange(ms) {
-        timeline.setCustomTime(new Date(ms));
-    }
-    ;
 
-    imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
-    current_radar_frame_timestamp = null;
-    next_radar_frame_timestamp = null;
-    current_radar_overlay = null;
+
 
     function onCustomTimeChange(properties) {
         if (!playback.isPlaying()) {
-            millis = properties.time.getTime();
-            playback.setCursor(millis);
-            seconds_since_linux_epoch = parseInt(millis / 1000);
-            next_radar_frame_timestamp = seconds_since_linux_epoch - (seconds_since_linux_epoch % 300);
-            if (current_radar_frame_timestamp !== next_radar_frame_timestamp) {
-                current_radar_frame_timestamp = next_radar_frame_timestamp;
+            ms = properties.time.getTime();
+            playback.setCursor(ms);
+            adjustRadarImage(ms);
+        }
+    }
 
-                radarImageUrl = '../radar_image/' + current_radar_frame_timestamp;
-                next_radar_overlay = L.imageOverlay(radarImageUrl, imageBounds);
-                next_radar_overlay.addTo(map).setOpacity(0.5);
-                if (current_radar_overlay !== null) {
-                    map.removeLayer(current_radar_overlay);
-                }
-                current_radar_overlay = next_radar_overlay;
+    // A callback so timeline is set after changing playback time
+    function onPlaybackTimeChange(ms) {
+        timeline.setCustomTime(new Date(ms));
+        adjustRadarImage(ms);
+    }
 
+
+    function adjustRadarImage(ms) {
+        seconds_since_unix_epoch = parseInt(ms / 1000);
+        next_radar_frame_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
+        if (current_radar_frame_timestamp !== next_radar_frame_timestamp) {
+            current_radar_frame_timestamp = next_radar_frame_timestamp;
+
+            radarImageUrl = '../radar_image/' + current_radar_frame_timestamp;
+            next_radar_overlay = L.imageOverlay(radarImageUrl, imageBounds);
+            next_radar_overlay.addTo(map).setOpacity(0.5);
+            if (current_radar_overlay !== null) {
+                map.removeLayer(current_radar_overlay);
             }
+            current_radar_overlay = next_radar_overlay;
+
         }
     }
 });

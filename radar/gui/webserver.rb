@@ -29,7 +29,7 @@ get '/' do
   <<STRING
   <html>
     <head>
-        <title>GPX + radar</title>
+        <title>SHMÚ Radars on Steroids</title>
         <link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'>
    <style>
 

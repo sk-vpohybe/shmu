@@ -46,7 +46,7 @@ def geojson_of_latest_n_minutes_of_radar_images n=60
 end
 
 get '/' do
-  erb :radar, :locals => {:title => 'Last Hour', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Radar images from last hour';"}
+  erb :radar, :locals => {:title => 'Najnovšie zábery', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Radarové zábery za uplynulú hodinu';"}
 end
 
 get '/radar_image/:epoch_time_in_seconds' do

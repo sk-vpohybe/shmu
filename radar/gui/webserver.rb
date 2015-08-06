@@ -26,8 +26,27 @@ def gpx_to_geojson gpx
   output.to_json
 end
 
+def geojson_of_latest_n_minutes_of_radar_images n=60
+  t = Time.now
+  n_minutes_before_now_in_seconds_in_epoch_time = t.to_i - (t.min % 5)*60  - n*60
+  from_past_to_current_time_in_millis = (0...n).to_a.collect{|minutes| (n_minutes_before_now_in_seconds_in_epoch_time + minutes*60) * 1000 }
+  
+  output = {
+    "type" => "Feature",
+    "geometry" => {
+      "type"  => "MultiPoint",
+      "coordinates"  => [[0,0]]*n
+    },
+    "properties"  => {
+      "time"  => from_past_to_current_time_in_millis
+    }
+  }
+  
+  output.to_json
+end
+
 get '/' do
-  erb :index
+  erb :last_hour, :locals => {:last_hour_geojson => geojson_of_latest_n_minutes_of_radar_images}
 end
 
 get '/radar_image/:epoch_time_in_seconds' do
@@ -54,7 +73,7 @@ post '/upload_gpx' do
   geojson = gpx_to_geojson(gpx)
   track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
   File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
-    |f| f.write("trackName = '#{filename}'; trackToDisplay = #{geojson};") 
+    |f| f.write("trackName = '#{filename}'; gpx = true; trackToDisplay = #{geojson};") 
   end
   
   redirect "/gpx/#{unique_gpx_filename}.html"

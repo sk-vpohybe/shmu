@@ -35,7 +35,7 @@ $(function() {
     // Setup leaflet map
     map = new L.Map('map');
 
-    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png');
+    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png', {attribution : '(c) freemap.sk, openstreetmap.org contributors'});
 
     // Center map and default zoom level
     map.setView([48.74157, 19.35118], 8);
@@ -92,6 +92,9 @@ $(function() {
 
     // Set timeline time change event, so cursor is set after moving custom time (blue)
     timeline.on('timechange', onCustomTimeChange);
+    
+    if(!gpx)
+        $('.leaflet-control-layers').hide();
 
     function onCustomTimeChange(properties) {
         if (!playback.isPlaying()) {

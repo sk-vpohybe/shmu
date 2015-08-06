@@ -35,7 +35,7 @@ $(function() {
     // Setup leaflet map
     map = new L.Map('map');
 
-    var basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png');
+    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png');
 
     // Center map and default zoom level
     map.setView([48.74157, 19.35118], 8);
@@ -90,15 +90,8 @@ $(function() {
     playback.addData(trackToDisplay);
     playback.setSpeed(500);
 
-    // Uncomment to test data reset;
-    //playback.setData(blueMountain);    
-
     // Set timeline time change event, so cursor is set after moving custom time (blue)
     timeline.on('timechange', onCustomTimeChange);
-
-
-
-
 
     function onCustomTimeChange(properties) {
         if (!playback.isPlaying()) {

@@ -51,7 +51,7 @@ end
 
 get '/radar_image/:epoch_time_in_seconds' do
   t = Time.at params[:epoch_time_in_seconds].to_i
-  path_to_radar_image = "images/#{t.strftime('%Y%m%d')}/#{t.strftime('%Y%m%d_%H%M')}.gif"
+  path_to_radar_image = "images/radar/#{t.strftime('%Y%m%d')}/#{t.strftime('%Y%m%d_%H%M')}.gif"
   
   unless File.exists?("public/#{path_to_radar_image}") 
     # force first day we started image download

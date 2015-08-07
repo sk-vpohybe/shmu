@@ -11,8 +11,8 @@ $(function() {
 
     demoTracks = [trackToDisplay];
     // Get start/end times
-    var startTime = new Date(demoTracks[0].properties.time[0]);
-    var endTime = new Date(demoTracks[0].properties.time[demoTracks[0].properties.time.length - 1]);
+    startTime = new Date(demoTracks[0].properties.time[0]);
+    endTime = new Date(demoTracks[0].properties.time[demoTracks[0].properties.time.length - 1]);
 
     // Create a DataSet with data
     var timelineData = new vis.DataSet([{start: startTime, end: endTime, content: trackName}]);
@@ -27,15 +27,12 @@ $(function() {
     };
 
     // Setup timeline
-    var timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
-
-    // Set custom time marker (blue)
-    timeline.setCustomTime(startTime);
+    timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
 
     // Setup leaflet map
     map = new L.Map('map');
 
-    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png', {attribution : '(c) freemap.sk, openstreetmap.org contributors'});
+    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png', {attribution: '(c) freemap.sk, openstreetmap.org contributors'});
 
     // Center map and default zoom level
     map.setView([48.74157, 19.35118], 8);
@@ -90,10 +87,19 @@ $(function() {
     playback.addData(trackToDisplay);
     playback.setSpeed(500);
 
-    // Set timeline time change event, so cursor is set after moving custom time (blue)
+
+
     timeline.on('timechange', onCustomTimeChange);
-    
-    if(!gpx)
+
+    if (gpx)
+        timeline.setCustomTime(startTime);
+    else{
+        timeline.setCustomTime(endTime);
+        adjustRadarImage(endTime);
+    }
+
+
+    if (!gpx)
         $('.leaflet-control-layers').hide();
 
     function onCustomTimeChange(properties) {
@@ -116,7 +122,7 @@ $(function() {
         upcoming_radar_overlay1_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
         upcoming_radar_overlay2_timestamp = upcoming_radar_overlay1_timestamp + 5 * 60;
         attitude_towards_overlay2 = (upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (5 * 60);
-        
+
 
         if (upcoming_radar_overlay1_timestamp !== displayed_radar_overlay1_timestamp) {
             if (radar_overlay1)
@@ -130,7 +136,7 @@ $(function() {
 
         o1 = attitude_towards_overlay2;
         if (radar_overlay1)
-            radar_overlay1.setOpacity(Math.sqrt(o1)*0.8);
+            radar_overlay1.setOpacity(Math.sqrt(o1) * 0.8);
 
         if (upcoming_radar_overlay2_timestamp !== displayed_radar_overlay2_timestamp) {
             if (radar_overlay2)
@@ -145,7 +151,7 @@ $(function() {
         o2 = (1.0 - attitude_towards_overlay2);
 
         if (radar_overlay2)
-            radar_overlay2.setOpacity(Math.sqrt(o2)*0.8);
+            radar_overlay2.setOpacity(Math.sqrt(o2) * 0.8);
     }
 });
 

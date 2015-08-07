@@ -55,7 +55,7 @@ get '/radar_image/:epoch_time_in_seconds' do
   
   unless File.exists?("public/#{path_to_radar_image}") 
     # force first day we started image download
-  path_to_radar_image = "radar-image-not-found.gif"
+  path_to_radar_image = "images/radar-image-not-found.gif"
   end
   
   redirect path_to_radar_image

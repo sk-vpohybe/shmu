@@ -63,6 +63,8 @@ $(function() {
                 if (!result.radius) {
                     result.radius = 2;
                 }
+                
+                result.color = '#9724e3';
 
                 return new L.CircleMarker(latlng, result);
             }

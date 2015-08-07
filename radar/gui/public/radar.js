@@ -7,6 +7,14 @@ radar_overlay2 = null;
 
 imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
+document.getElementById("gpxFileToUpload").onchange = function() {
+    if(this.value) 
+        document.getElementById("submitGpxFile").disabled = false; 
+    else
+        document.getElementById("submitGpxFile").disabled = true; 
+    
+}
+
 $(function() {
 
     demoTracks = [trackToDisplay];

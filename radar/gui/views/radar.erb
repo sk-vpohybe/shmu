@@ -52,8 +52,8 @@
   <body>
     <div id="header">      
       <form action="/upload_gpx" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Zobraz GPX">
+        <input type="file" name="file" id="gpxFileToUpload">
+        <input type="submit" value="Zobraz GPX" id="submitGpxFile" disabled="true">
       </form>
     </div>
     <div id="map"></div>

@@ -55,7 +55,7 @@ get '/radar_image/:epoch_time_in_seconds' do
   
   unless File.exists?("public/#{path_to_radar_image}") 
     # force first day we started image download
-  path_to_radar_image = "images/radar-image-not-found.gif"
+    path_to_radar_image = "images/radar-image-not-found.gif"
   end
   
   redirect path_to_radar_image
@@ -63,20 +63,24 @@ end
 
 post '/upload_gpx' do
   timestamp = Time.now.strftime('%Y%m%d_%H%M%S')
-  filename = params[:file][:filename]
-  file = params[:file][:tempfile]
+  if params[:file]
+    filename = params[:file][:filename]
+    file = params[:file][:tempfile]
 
-  unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
-  gpx = file.read
-  File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
+    unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
+    gpx = file.read
+    File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
   
-  geojson = gpx_to_geojson(gpx)
-  track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
-  File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
-    |f| f.write("trackToDisplay = #{geojson};") 
+    geojson = gpx_to_geojson(gpx)
+    track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
+    File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
+      |f| f.write("trackToDisplay = #{geojson};") 
+    end
+  
+    redirect "/gpx/#{unique_gpx_filename}.html"
+  else
+    
   end
-  
-  redirect "/gpx/#{unique_gpx_filename}.html"
 end
 
 get '/gpx/:unique_gpx_filename' do

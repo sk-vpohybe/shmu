@@ -95,7 +95,7 @@ $(function() {
         timeline.setCustomTime(startTime);
     else{
         timeline.setCustomTime(endTime);
-        adjustRadarImage(endTime);
+        adjustRadarImage(endTime - 1000*60*5);
     }
 
 

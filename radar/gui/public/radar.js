@@ -39,6 +39,7 @@ $(function() {
 
     // Adds the background layer to the map
     map.addLayer(basemapLayer);
+    new L.Hash(map); // https://github.com/mlevans/leaflet-hash
 
 
     // =====================================================

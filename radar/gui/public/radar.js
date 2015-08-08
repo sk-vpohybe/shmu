@@ -13,6 +13,7 @@ $(function() {
     // Get start/end times
     startTime = new Date(demoTracks[0].properties.time[0]);
     endTime = new Date(demoTracks[0].properties.time[demoTracks[0].properties.time.length - 1]);
+    $('#oProjekte').popup();
     $('#launchGpxUpload').popup();
     $('#uploadGpxButton').click(function() {
         if ($('#gpxFileToUpload')[0].value != ''){

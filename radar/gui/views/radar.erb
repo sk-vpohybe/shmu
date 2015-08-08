@@ -11,6 +11,20 @@
       #header {
         height: 40px ;
         padding: 3px;
+        text-align: right;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      #logo {
+        height: 40px ;
+        padding: 3px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0; 
       }
 
       #map {
@@ -65,8 +79,12 @@
   </head>
 
   <body>
+    <div id="logo"> 
+      <a href="http://radar.cyklonaut.sk"><img src="../images/logo.svg" style="height:100%" /></a>
+    </div>
     <div id="header">      
       <a class="initialism launchGpxUpload_open btn btn-success" href="#launchGpxUpload">Nahrať GPX</a>
+      <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">O projekte</a>
     </div>
     <div id="map"></div>
     <div id="timeline"></div>
@@ -82,6 +100,13 @@
     </p>
     <button class="btn btn-default" id="uploadGpxButton">Nahrať .gpx</button>
     <button class="launchGpxUpload_close btn btn-default">Zrušiť</button>
+  </div>
+
+  <div id="oProjekte" class="well" style="max-width:44em; display:none">
+    <h4>O projekte radar.cyklonaut.sk</h4>
+
+    <p>TODO</p>
+    <button class="oProjekte_close btn btn-default">Zavrieť</button>
   </div>
 
   <script src="../jquery-1.11.0.js"></script>

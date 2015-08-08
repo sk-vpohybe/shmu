@@ -7,20 +7,19 @@ radar_overlay2 = null;
 
 imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
-document.getElementById("gpxFileToUpload").onchange = function() {
-    if(this.value) 
-        document.getElementById("submitGpxFile").disabled = false; 
-    else
-        document.getElementById("submitGpxFile").disabled = true; 
-    
-}
-
 $(function() {
 
     demoTracks = [trackToDisplay];
     // Get start/end times
     startTime = new Date(demoTracks[0].properties.time[0]);
     endTime = new Date(demoTracks[0].properties.time[demoTracks[0].properties.time.length - 1]);
+    $('#launchGpxUpload').popup();
+    $('#uploadGpxButton').click(function() {
+        if ($('#gpxFileToUpload')[0].value != ''){
+            $('#uploadGpxButton').prop('disabled', true);
+            $('#uploadGpxForm').submit();
+        }        
+    });
 
     // Create a DataSet with data
     var timelineData = new vis.DataSet([{start: startTime, end: endTime, content: trackName}]);
@@ -71,8 +70,8 @@ $(function() {
                 if (!result.radius) {
                     result.radius = 2;
                 }
-                
-                result.color = '#9724e3';
+
+                result.color = '#4870B5';
 
                 return new L.CircleMarker(latlng, result);
             }
@@ -104,9 +103,9 @@ $(function() {
 
     if (gpx)
         timeline.setCustomTime(startTime);
-    else{
+    else {
         timeline.setCustomTime(endTime);
-        adjustRadarImage(endTime - 1000*60*5);
+        adjustRadarImage(endTime - 1000 * 60 * 5);
     }
 
 

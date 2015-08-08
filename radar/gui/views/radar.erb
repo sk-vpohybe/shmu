@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../leaflet.css" rel="stylesheet" type="text/css" />
     <link href="../vis.min.css" rel="stylesheet" type="text/css" /> 
+    <link href="../bootstrap.min.css" rel="stylesheet" type="text/css" /> 
+
     <style>
       #header {
         height: 40px ;
+        padding: 3px;
       }
 
       #map {
@@ -32,6 +35,18 @@
         bottom: 0;
       }
 
+      .vis.timeline .item {
+        border-color: white;
+      }
+      .vis.timeline .item.range {
+        background-color: #509E50;
+        color: white;
+      }
+
+      .vis.timeline .customtime {
+        background-color: #225422;
+      }
+
       body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
@@ -51,36 +66,54 @@
 
   <body>
     <div id="header">      
-      <form action="/upload_gpx" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" id="gpxFileToUpload" style="width: 180px;">
-        <input type="submit" value="Zobraz GPX" id="submitGpxFile" disabled="true">
-      </form>
+      <a class="initialism launchGpxUpload_open btn btn-success" href="#launchGpxUpload">Nahrať GPX</a>
     </div>
     <div id="map"></div>
     <div id="timeline"></div>
 
-    <script src="../jquery-1.11.0.js"></script>
-    <script src="../vis.min.js"></script>  
-    <script src="../leaflet-src.js"></script>
-    <script src="../LeafletPlayback.min.js"></script>
-    <script src="../LeafletPlayback.min.js"></script>
-    <script src="../leaflet-hash.js"></script>
-    <script>
-        <%= js %>
-    </script>
-    <% if defined?(geojson) %>
-      <script src="../<%= geojson %>"></script>
-    <% end %>
-    <script src="../radar.js"></script>
-    
-    <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <div id="launchGpxUpload" class="well" style="max-width:44em; display:none">
+      <h4>Nahrať GPS záznam vo formáte .gpx</h4>
 
-  ga('create', 'UA-66097156-1', 'auto');
-  ga('send', 'pageview');
-</script>
-  </body>
+      <p>GPS záznam sa zobrazí na mape spolu s časovo zodpovedajúcimi radarovými snímkami.</p>
+      <p>
+      <form action="/upload_gpx" method="POST" enctype="multipart/form-data" id="uploadGpxForm">
+        <input type="file" name="file" id="gpxFileToUpload" />
+      </form>
+    </p>
+    <button class="btn btn-default" id="uploadGpxButton">Nahrať .gpx</button>
+    <button class="launchGpxUpload_close btn btn-default">Zrušiť</button>
+  </div>
+
+  <script src="../jquery-1.11.0.js"></script>
+  <script src="../vis.min.js"></script>  
+  <script src="../leaflet-src.js"></script>
+  <script src="../LeafletPlayback.min.js"></script>
+  <script src="../LeafletPlayback.min.js"></script>
+  <script src="../leaflet-hash.js"></script>
+  <script src="../jquery.popupoverlay.js"></script>
+  <script>
+<%= js %>
+  </script>
+  <% if defined?(geojson) %>
+    <script src="../<%= geojson %>"></script>
+  <% end %>
+  <script src="../radar.js"></script>
+
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+              m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-66097156-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
 </html>

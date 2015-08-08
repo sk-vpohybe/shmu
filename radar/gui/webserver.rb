@@ -7,6 +7,7 @@ require 'erb'
 
 set :port, 1701
 set :bind, '0.0.0.0'
+set :environment, :production if (ARGV[0] && ARGV[0] == 'production')
 
 def gpx_to_geojson gpx
   h = Hash.from_xml gpx

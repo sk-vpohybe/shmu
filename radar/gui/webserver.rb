@@ -6,6 +6,7 @@ require "active_support/core_ext"
 require 'erb'
 
 set :port, 1701
+set :bind, '0.0.0.0'
 
 def gpx_to_geojson gpx
   h = Hash.from_xml gpx

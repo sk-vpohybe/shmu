@@ -40,7 +40,7 @@ $(function() {
     // Setup leaflet map
     map = new L.Map('map');
 
-    basemapLayer = new L.TileLayer('http://freemap.sk/C/{z}/{x}/{y}.png', {attribution: '(c) freemap.sk, openstreetmap.org contributors'});
+    basemapLayer = new L.TileLayer('http://freemap.sk/T/{z}/{x}/{y}.png', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
     // Center map and default zoom level
     map.setView([48.74157, 19.35118], 8);

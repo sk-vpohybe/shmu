@@ -112,6 +112,9 @@ $(function() {
 
     if (!gpx)
         $('.leaflet-control-layers').hide();
+    
+    $(".leaflet-control-layers-overlays span").eq(0).text('Zobraziť trasu');
+    $(".playControl button").text('Animovať trasu');
 
     function onCustomTimeChange(properties) {
         if (!playback.isPlaying()) {

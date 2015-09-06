@@ -18,6 +18,7 @@ while true do
   
     puts "downloaded: #{image_filename}"
     `convert #{image_filename} no-clouds.png -compose Change-mask -composite #{image_filename.sub('png', 'gif')}`
+    FileUtils.rm image_filename
   rescue => e
     puts "#{Time.now}: failed to download/process image: #{e} #{e.class} #{e.backtrace}"
   end

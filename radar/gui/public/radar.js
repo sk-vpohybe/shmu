@@ -38,9 +38,9 @@ $(function() {
     timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
 
     // Setup leaflet map
-    map = new L.Map('map');
+    map = new L.Map('map', {minZoom: 7, maxZoom: 16});
 
-    basemapLayer = new L.TileLayer('http://nabezky.sk/map-tiles/T/{z}/{x}/{y}.png', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
+    basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/T/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
     // Center map and default zoom level
     map.setView([48.74157, 19.35118], 8);

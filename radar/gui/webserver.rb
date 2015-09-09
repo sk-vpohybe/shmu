@@ -51,18 +51,6 @@ get '/' do
   erb :radar, :locals => {:title => 'Najnovšie zábery', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Radarové zábery za uplynulú hodinu';"}
 end
 
-get '/radar_image/:epoch_time_in_seconds' do
-  t = Time.at params[:epoch_time_in_seconds].to_i
-  path_to_radar_image = "images/radar/#{t.strftime('%Y%m%d')}/#{t.strftime('%Y%m%d_%H%M')}.gif"
-  
-  unless File.exists?("public/#{path_to_radar_image}") 
-    # force first day we started image download
-    path_to_radar_image = "images/radar-image-not-found.gif"
-  end
-  
-  redirect path_to_radar_image
-end
-
 post '/upload_gpx' do
   timestamp = Time.now.strftime('%Y%m%d_%H%M%S')
   if params[:file]

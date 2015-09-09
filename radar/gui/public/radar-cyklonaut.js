@@ -143,7 +143,8 @@ $(function() {
                 map.removeLayer(radar_overlay1);
 
             displayed_radar_overlay1_timestamp = upcoming_radar_overlay1_timestamp;
-            radar_overlay1_image_url = '../radar_image/' + displayed_radar_overlay1_timestamp;
+            var tmpd =  new Date(displayed_radar_overlay1_timestamp*1000);
+            radar_overlay1_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
             radar_overlay1 = L.imageOverlay(radar_overlay1_image_url, imageBounds);
             radar_overlay1.addTo(map);
         }
@@ -157,7 +158,8 @@ $(function() {
                 map.removeLayer(radar_overlay2);
 
             displayed_radar_overlay2_timestamp = upcoming_radar_overlay2_timestamp;
-            radar_overlay2_image_url = '../radar_image/' + displayed_radar_overlay2_timestamp;
+            var tmpd =  new Date(displayed_radar_overlay2_timestamp*1000);
+            radar_overlay2_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
             radar_overlay2 = L.imageOverlay(radar_overlay2_image_url, imageBounds);
             radar_overlay2.addTo(map);
         }

@@ -4,6 +4,7 @@ upcoming_radar_overlay2_timestamp = null;
 displayed_radar_overlay2_timestamp = null;
 radar_overlay1 = null;
 radar_overlay2 = null;
+positionHash = null;
 
 imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
@@ -42,12 +43,18 @@ $(function() {
 
     basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/T/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
-    // Center map and default zoom level
-    map.setView([48.74157, 19.35118], 8);
-
-    // Adds the background layer to the map
+    var lastVisitPosition = Cookies.get('position'); 
+    if(lastVisitPosition){
+        var zoomLatLonArray = lastVisitPosition.split('/'); // zoom, lat, lon
+        map.setView([zoomLatLonArray[1], zoomLatLonArray[2]], zoomLatLonArray[0]);
+    } else {
+        map.setView([48.74157, 19.35118], 8);
+    }
+    
     map.addLayer(basemapLayer);
-    new L.Hash(map); // https://github.com/mlevans/leaflet-hash
+    positionHash = new L.Hash(map); 
+    
+    map.on("moveend", function (e) {if(positionHash.lastHash != null){Cookies.set('position', positionHash.lastHash.slice(1), { expires: 7 })}  });
 
 
     // =====================================================

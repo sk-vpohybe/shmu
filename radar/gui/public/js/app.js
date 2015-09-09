@@ -42,19 +42,10 @@ $(function() {
     map = new L.Map('map', {minZoom: 7, maxZoom: 16});
 
     basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/T/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
-
-    var lastVisitPosition = Cookies.get('position'); 
-    if(lastVisitPosition){
-        var zoomLatLonArray = lastVisitPosition.split('/'); // zoom, lat, lon
-        map.setView([zoomLatLonArray[1], zoomLatLonArray[2]], zoomLatLonArray[0]);
-    } else {
-        map.setView([48.74157, 19.35118], 8);
-    }
+    map.setView([48.74157, 19.35118], 8);
     
     map.addLayer(basemapLayer);
     positionHash = new L.Hash(map); 
-    
-    map.on("moveend", function (e) {if(positionHash.lastHash != null){Cookies.set('position', positionHash.lastHash.slice(1))}  });
 
 
     // =====================================================

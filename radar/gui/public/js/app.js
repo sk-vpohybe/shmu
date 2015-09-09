@@ -54,7 +54,7 @@ $(function() {
     map.addLayer(basemapLayer);
     positionHash = new L.Hash(map); 
     
-    map.on("moveend", function (e) {if(positionHash.lastHash != null){Cookies.set('position', positionHash.lastHash.slice(1), { expires: 7 })}  });
+    map.on("moveend", function (e) {if(positionHash.lastHash != null){Cookies.set('position', positionHash.lastHash.slice(1))}  });
 
 
     // =====================================================

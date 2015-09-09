@@ -1,0 +1,93 @@
+#header {
+    height: 40px ;
+    padding: 3px;
+    text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1001;
+}
+
+#logo {
+    height: 40px ;
+    padding: 3px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0; 
+    z-index: 1001;
+    background-color: rgba(255,255,255,0.8);
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 120px;
+}
+
+#title_container {
+    z-index: 10000;
+    position: absolute;
+    left: 100px;
+}    
+
+#timeline { 
+    height: 120px; 
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.vis.timeline .item {
+    border-color: white;
+}
+.vis.timeline .item.range {
+    background-color: #509E50;
+    background: -moz-linear-gradient( left ,
+        #006c88 0%,
+        #00c034 16%,
+        #6cec00 33%,
+        #fcc400 50%,
+        #fc5c00 66%,
+        #d40800 83%,
+        #a82c6c 100%
+        );
+
+    background: -webkit-gradient(linear,  left top ,  right bottom, 
+        color-stop(0%, #006c88), 
+        color-stop(16%, #00c034), 
+        color-stop(33%, #6cec00),           
+        color-stop(50%, #fcc400),
+        color-stop(66%, #fc5c00), 
+        color-stop(83%, #d40800), 
+        color-stop(100%, #a82c6c)
+        );       
+
+    color: white;
+}
+
+.vis.timeline .customtime {
+    background-color: #225422;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.1;
+}
+
+.datetimeControl p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.leaflet-top{
+    padding-top: 40px;
+}

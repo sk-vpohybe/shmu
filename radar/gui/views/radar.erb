@@ -3,105 +3,10 @@
     <title>radar.cyklonaut.sk: <%= title %></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../leaflet.css" rel="stylesheet" type="text/css" />
-    <link href="../vis.min.css" rel="stylesheet" type="text/css" /> 
-    <link href="../bootstrap.min.css" rel="stylesheet" type="text/css" /> 
-
-    <style>
-      #header {
-        height: 40px ;
-        padding: 3px;
-        text-align: right;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 1001;
-      }
-
-      #logo {
-        height: 40px ;
-        padding: 3px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0; 
-        z-index: 1001;
-        background-color: rgba(255,255,255,0.8);
-      }
-
-      #map {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 120px;
-      }
-
-      #title_container {
-        z-index: 10000;
-        position: absolute;
-        left: 100px;
-      }    
-
-      #timeline { 
-        height: 120px; 
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      .vis.timeline .item {
-        border-color: white;
-      }
-      .vis.timeline .item.range {
-        background-color: #509E50;
-        background: -moz-linear-gradient( left ,
-          #006c88 0%,
-          #00c034 16%,
-          #6cec00 33%,
-          #fcc400 50%,
-          #fc5c00 66%,
-          #d40800 83%,
-          #a82c6c 100%
-          );
-
-        background: -webkit-gradient(linear,  left top ,  right bottom, 
-          color-stop(0%, #006c88), 
-          color-stop(16%, #00c034), 
-          color-stop(33%, #6cec00),           
-          color-stop(50%, #fcc400),
-          color-stop(66%, #fc5c00), 
-          color-stop(83%, #d40800), 
-          color-stop(100%, #a82c6c)
-          );       
-
-        color: white;
-      }
-
-      .vis.timeline .customtime {
-        background-color: #225422;
-      }
-
-      body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
-
-      h1 {
-        font-size: 36px;
-        font-weight: 300;
-        line-height: 1.1;
-      }
-
-      .datetimeControl p {
-        margin: 0;
-        font-size: 16px;
-      }
-      
-      .leaflet-top{
-        padding-top: 40px;
-      }
-    </style>
+    <link href="../<%= versioned_css 'leaflet' %>" rel="stylesheet" type="text/css" />
+    <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />  
+    <link href="../<%= versioned_css 'bootstrap.min' %>" rel="stylesheet" type="text/css" />     
+    <link href="../<%= versioned_css 'app' %>" rel="stylesheet" type="text/css" />       
   </head>
 
   <body>
@@ -135,21 +40,22 @@
     <button class="oProjekte_close btn btn-default">Zavrieť</button>
   </div>
 
-  <script src="../jquery-1.11.0.js"></script>
-  <script src="../vis.min.js"></script>  
-  <script src="../leaflet-src.js"></script>
-  <script src="../LeafletPlayback.min.js"></script>
-  <script src="../LeafletPlayback.min.js"></script>
-  <script src="../leaflet-hash.js"></script>
-  <script src="../jquery.popupoverlay.js"></script>
-  <script src="../strftime.js"></script>
+  <script src="../<%= versioned_javascript 'jquery' %>"></script>
+  <script src="../<%= versioned_javascript 'vis.min' %>"></script>
+  <script src="../<%= versioned_javascript 'leaflet-src' %>"></script>
+  <script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
+  <script src="../<%= versioned_javascript 'leaflet-hash' %>"></script>
+  <script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
+  <script src="../<%= versioned_javascript 'strftime' %>"></script>
+
   <script>
 <%= js %>
   </script>
   <% if defined?(geojson) %>
     <script src="../<%= geojson %>"></script>
   <% end %>
-  <script src="../radar-cyklonaut.js"></script>
+
+  <script src="../<%= versioned_javascript 'app' %>"></script>
 
   <script>
     (function(i, s, o, g, r, a, m) {

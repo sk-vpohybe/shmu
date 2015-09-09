@@ -9,6 +9,17 @@ set :port, 1701
 set :bind, '0.0.0.0'
 set :environment, :production if (ARGV[0] && ARGV[0] == 'production')
 
+helpers do
+  
+  def versioned_javascript js
+    "js/#{js}.js?" + File.mtime(File.join("public/js", "#{js}.js")).to_i.to_s
+  end
+  
+  def versioned_css css
+    "css/#{css}.css?" + File.mtime(File.join("public/css", "#{css}.css")).to_i.to_s
+  end
+end
+
 def gpx_to_geojson gpx
   h = Hash.from_xml gpx
   lon_lats = h['gpx']['trk']['trkseg']['trkpt'].collect{|e| [e['lon'], e['lat']]}

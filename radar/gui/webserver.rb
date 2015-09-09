@@ -59,7 +59,7 @@ def geojson_of_latest_n_minutes_of_radar_images n=60
 end
 
 get '/' do
-  erb :radar, :locals => {:title => 'Najnovšie zábery', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Radarové zábery za uplynulú hodinu';"}
+  erb :radar, :locals => {:title => 'Kde práve prší?', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu';"}
 end
 
 post '/upload_gpx' do

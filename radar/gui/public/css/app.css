@@ -47,23 +47,23 @@
 .vis.timeline .item.range {
     background-color: #509E50;
     background: -moz-linear-gradient( left ,
-        #006c88 0%,
-        #00c034 16%,
-        #6cec00 33%,
-        #fcc400 50%,
-        #fc5c00 66%,
-        #d40800 83%,
-        #a82c6c 100%
+        #2c64b0 0%,
+        #006c88 16%,
+        #00c034 33%,
+        #6cec00 50%,
+        #fcc800 66%,
+        #fc6400 83%,
+        #d80800 100%
         );
 
     background: -webkit-gradient(linear,  left top ,  right bottom, 
-        color-stop(0%, #006c88), 
-        color-stop(16%, #00c034), 
-        color-stop(33%, #6cec00),           
-        color-stop(50%, #fcc400),
-        color-stop(66%, #fc5c00), 
-        color-stop(83%, #d40800), 
-        color-stop(100%, #a82c6c)
+        color-stop(0%, #2c64b0), 
+        color-stop(16%, #006c88), 
+        color-stop(33%, #00c034),           
+        color-stop(50%, #6cec00),
+        color-stop(66%, #fcc800), 
+        color-stop(83%, #fc6400), 
+        color-stop(100%, #d80800)
         );       
 
     color: white;
@@ -90,4 +90,10 @@ h1 {
 
 .leaflet-top{
     padding-top: 40px;
+}
+
+.colorLegend {
+    padding: 3px;
+    color: white;
+    border-radius:5px;
 }

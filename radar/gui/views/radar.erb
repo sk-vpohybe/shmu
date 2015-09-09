@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>radar.cyklonaut.sk: <%= title %></title>
+    <title>radar.cyklonaut.sk &ndash; <%= title %></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../<%= versioned_css 'leaflet' %>" rel="stylesheet" type="text/css" />
@@ -15,7 +15,7 @@
     </div>
     <div id="header">      
       <a class="initialism launchGpxUpload_open btn btn-success" href="#launchGpxUpload">Nahrať GPX</a>
-      <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">O projekte</a>
+      <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">Info</a>
     </div>
     <div id="map"></div>
     <div id="timeline"></div>
@@ -36,42 +36,64 @@
   <div id="oProjekte" class="well" style="max-width:44em; display:none">
     <h4>O projekte radar.cyklonaut.sk</h4>
 
-    <p>TODO</p>
-    <button class="oProjekte_close btn btn-default">Zavrieť</button>
-  </div>
+    <p>Tento portál je iniciatíva občianskeho združenia <a href="http://www.v-pohybe.sk/">Slovensko v pohybe</a>, ktoré prevádzkuje portály <a href="https://nabezky.sk">nabežky.sk</a> a <a href="http://cyklonaut.sk">cyklonaut.sk</a>.</p>
 
-  <script src="../<%= versioned_javascript 'jquery' %>"></script>
-  <script src="../<%= versioned_javascript 'vis.min' %>"></script>
-  <script src="../<%= versioned_javascript 'leaflet-src' %>"></script>
-  <script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
-  <script src="../<%= versioned_javascript 'leaflet-hash' %>"></script>
-  <script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
-  <script src="../<%= versioned_javascript 'strftime' %>"></script>
+    <p>Nad mapou krajiny zobrazujeme zlúčenú mapu rádiolokačnej odrazivosti, ktorá zobrazuje množstvo spadnutých zrážok. 
+      Tieto radarové zábery preberáme zo Slovenského hydrometeorologického ústavu. 
+      Pre odborné informácie o radarových záberoch <a href="http://www.shmu.sk/sk/?page=1&id=meteo_radar">navštívte stránku SHMÚ</a>.</p>
 
-  <script>
+    <p>Farba "oblakov" zodpovedá úhrnu zrážok za hodinu: <br />
+      <span style="background-color: #2c64b0;" class="colorLegend">0.02 mm/h</span>
+      <span style="background-color: #006c88;" class="colorLegend">0.1 mm/h</span>
+      <span style="background-color: #00c034;" class="colorLegend">0.3 mm/h</span>
+      <span style="background-color: #6cec00;" class="colorLegend">1.3 mm/h</span>
+      <span style="background-color: #fcc800;" class="colorLegend">5.6 mm/h</span>
+      <span style="background-color: #fc6400;" class="colorLegend">24 mm/h</span>
+      <span style="background-color: #d80800;" class="colorLegend">100 mm/h</span>
+  </p>
+
+  <p>Turistickú mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
+
+  <p>Podnety a otázky môžete posielať na <b>info@cyklonaut.sk</b></p>
+
+  <p>Zdrojové kódy sú prístupné na <a href="https://github.com/sk-vpohybe/shmu">github.com</a>.</p>
+
+
+  <button class="oProjekte_close btn btn-default">Zavrieť</button>
+</div>
+
+<script src="../<%= versioned_javascript 'jquery' %>"></script>
+<script src="../<%= versioned_javascript 'vis.min' %>"></script>
+<script src="../<%= versioned_javascript 'leaflet-src' %>"></script>
+<script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
+<script src="../<%= versioned_javascript 'leaflet-hash' %>"></script>
+<script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
+<script src="../<%= versioned_javascript 'strftime' %>"></script>
+
+<script>
 <%= js %>
-  </script>
-  <% if defined?(geojson) %>
-    <script src="../<%= geojson %>"></script>
-  <% end %>
+</script>
+<% if defined?(geojson) %>
+  <script src="../<%= geojson %>"></script>
+<% end %>
 
-  <script src="../<%= versioned_javascript 'app' %>"></script>
+<script src="../<%= versioned_javascript 'app' %>"></script>
 
-  <script>
-    (function(i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function() {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-              m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+<script>
+  (function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function() {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-66097156-1', 'auto');
-    ga('send', 'pageview');
-  </script>
+  ga('create', 'UA-66097156-1', 'auto');
+  ga('send', 'pageview');
+</script>
 </body>
 </html>

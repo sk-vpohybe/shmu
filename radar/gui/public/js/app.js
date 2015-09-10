@@ -6,7 +6,7 @@ radar_overlay1 = null;
 radar_overlay2 = null;
 positionHash = null;
 
-imageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
+radarImageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
 $(function() {
 
@@ -143,7 +143,7 @@ $(function() {
             displayed_radar_overlay1_timestamp = upcoming_radar_overlay1_timestamp;
             var tmpd =  new Date(displayed_radar_overlay1_timestamp*1000);
             radar_overlay1_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
-            radar_overlay1 = L.imageOverlay(radar_overlay1_image_url, imageBounds);
+            radar_overlay1 = L.imageOverlay(radar_overlay1_image_url, radarImageBounds);
             radar_overlay1.addTo(map);
         }
 
@@ -158,7 +158,7 @@ $(function() {
             displayed_radar_overlay2_timestamp = upcoming_radar_overlay2_timestamp;
             var tmpd =  new Date(displayed_radar_overlay2_timestamp*1000);
             radar_overlay2_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
-            radar_overlay2 = L.imageOverlay(radar_overlay2_image_url, imageBounds);
+            radar_overlay2 = L.imageOverlay(radar_overlay2_image_url, radarImageBounds);
             radar_overlay2.addTo(map);
         }
 

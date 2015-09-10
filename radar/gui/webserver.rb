@@ -78,7 +78,6 @@ get '/' do
   error_msg = params[:error_message]
   erb :radar, 
     :locals => {:error_message => error_msg, 
-    :title => 'Kde práve prší?', 
     :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
 end
 
@@ -93,13 +92,13 @@ post '/upload_gpx' do
     gpx = file.read
 
     if(gpx.size < 2000000)
-      unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
+      unique_gpx_filename = rand(36**6).to_s(36)
       File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
  
       geojson = gpx_to_geojson(gpx)
       track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
       File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
-        |f| f.write("trackToDisplay = #{geojson};") 
+        |f| f.write("trackToDisplay = #{geojson}; trackName = 'Názov gpx súboru: #{filename.gsub("'", '')}';") 
       end
     else
       error_message = "súbor nemôže byť väčší ako 2MB"
@@ -111,11 +110,19 @@ post '/upload_gpx' do
   if error_message
     redirect "/?error_message=#{CGI.escape(error_message)}"
   else
-    redirect "/gpx/#{unique_gpx_filename}.html"
+    redirect "/track/#{unique_gpx_filename}"
   end
 end
 
-get '/gpx/:unique_gpx_filename' do
-  track_as_geojson_js_filename = "gpx/#{params[:unique_gpx_filename].gsub('.html', '')}.geojson.js"
-  erb :radar, :locals => {:title => params[:unique_gpx_filename], :geojson => track_as_geojson_js_filename, :js => "gpx = true; trackName = '#{params[:unique_gpx_filename]}';"}
+get '/track/:unique_gpx_filename' do
+  unique_gpx_filename = params[:unique_gpx_filename]
+  
+  if unique_gpx_filename =~ /^[0-9a-zA-Z]*$/ && File.exists?("public/gpx/#{unique_gpx_filename}")# safety check
+    track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
+    erb :radar, :locals => { :unique_gpx_filename => unique_gpx_filename, :geojson => track_as_geojson_js_filename, :js => "gpx = true;"}
+  else
+    error_message = "Trasa s identifikátorom '#{unique_gpx_filename}' sa nenašla."
+    redirect "/?error_message=#{CGI.escape(error_message)}"
+  end
+
 end

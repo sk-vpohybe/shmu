@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>radar.cyklonaut.sk &ndash; <%= title %></title>
+    <title>radar.cyklonaut.sk</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../<%= versioned_css 'leaflet' %>" rel="stylesheet" type="text/css" />
@@ -15,7 +15,10 @@
     <div id="logo"> 
       <a href="http://radar.cyklonaut.sk"><img src="../images/logo.svg" style="height:100%" /></a>
     </div>
-    <div id="header">      
+    <div id="header">  
+      <% if defined?(unique_gpx_filename) %>
+        <a class="initialism share_open btn btn-success" href="#share">Zdieľať</a>
+      <% end %>
       <a class="initialism launchGpxUpload_open btn btn-success" href="#launchGpxUpload">Nahrať GPX</a>
       <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">Info</a>
     </div>
@@ -66,11 +69,20 @@
   </div>
 
   <div id="errorMessage" class="well" style="max-width:44em; display:none">
-    <h4>Pri nahrávaní gpx súboru nastala chyba</h4>
-    
+    <h4>Pri spracovaní gpx súboru nastala chyba</h4>
+
     <p><%= error_message if defined?(error_message) %></p>
     <button class="errorMessage_close btn btn-default">Zavrieť</button>
   </div>
+
+  <% if defined?(unique_gpx_filename) %>
+    <div id="share" class="well" style="max-width:44em; display:none">
+      <p>Práve zobrazenú trasu je možné zdieľať preposlaním tejto URL adresy:</p>
+      <p><code>http://radar.cyklonaut.sk/track/<%= unique_gpx_filename %></code></p>
+
+      <button class="share_close btn btn-default">Zavrieť</button>
+    </div>
+  <% end %>
 
   <script src="../<%= versioned_javascript 'jquery' %>"></script>
   <script src="../<%= versioned_javascript 'vis.min' %>"></script>

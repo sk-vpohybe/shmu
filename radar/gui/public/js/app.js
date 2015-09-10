@@ -15,6 +15,9 @@ $('#oProjekte').popup();
 $('#launchGpxUpload').popup();
 $('#errorMessage').popup();
 
+if($('#share'))
+    $('#share').popup();
+
 if(typeof(openErrorMessagePopup) != 'undefined' && openErrorMessagePopup == true)
     $('#errorMessage').popup('show');
 

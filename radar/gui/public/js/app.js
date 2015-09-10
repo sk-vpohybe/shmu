@@ -13,6 +13,11 @@ startTime = new Date(playbackTracks[0].properties.time[0]);
 endTime = new Date(playbackTracks[0].properties.time[playbackTracks[0].properties.time.length - 1]);
 $('#oProjekte').popup();
 $('#launchGpxUpload').popup();
+$('#errorMessage').popup();
+
+if(typeof(openErrorMessagePopup) != 'undefined' && openErrorMessagePopup == true)
+    $('#errorMessage').popup('show');
+
 $('#uploadGpxButton').click(function() {
     if ($('#gpxFileToUpload')[0].value != '') {
         $('#uploadGpxButton').prop('disabled', true);

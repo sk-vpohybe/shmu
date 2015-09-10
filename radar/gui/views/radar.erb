@@ -7,7 +7,7 @@
     <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />  
     <link href="../<%= versioned_css 'bootstrap.min' %>" rel="stylesheet" type="text/css" />     
     <link href="../<%= versioned_css 'app' %>" rel="stylesheet" type="text/css" />       
-    
+
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
   </head>
 
@@ -52,51 +52,58 @@
       <span style="background-color: #fcc800;" class="colorLegend">5.6&nbsp;mm/h (silný dážď)</span>
       <span style="background-color: #fc6400;" class="colorLegend">24&nbsp;mm/h</span>
       <span style="background-color: #d80800;" class="colorLegend">100&nbsp;mm/h</span>
-  </p>
+    </p>
 
-  <p>Turistickú mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
+    <p>Turistickú mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
 
-  <p>Podnety a otázky môžete posielať na <b>info@cyklonaut.sk</b></p>
+    <p>Podnety a otázky môžete posielať na <b>info@cyklonaut.sk</b></p>
 
-  <p>Zdrojové kódy sú prístupné na <a href="https://github.com/sk-vpohybe/shmu">github.com</a>.</p>
-  
-  <p><i>Údaje z tohto portálu môžu byť nepresné a prevádzkovateľ nenesie žiadnu zopovednosť za škody spôsobené ich použitím.</i></p>
+    <p>Zdrojové kódy sú prístupné na <a href="https://github.com/sk-vpohybe/shmu">github.com</a>.</p>
 
-  <button class="oProjekte_close btn btn-default">Zavrieť</button>
-</div>
+    <p><i>Údaje z tohto portálu môžu byť nepresné a prevádzkovateľ nenesie žiadnu zopovednosť za škody spôsobené ich použitím.</i></p>
 
-<script src="../<%= versioned_javascript 'jquery' %>"></script>
-<script src="../<%= versioned_javascript 'vis.min' %>"></script>
-<script src="../<%= versioned_javascript 'leaflet' %>"></script>
-<script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
-<script src="../<%= versioned_javascript 'leaflet-hash' %>"></script>
-<script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
-<script src="../<%= versioned_javascript 'strftime' %>"></script>
+    <button class="errorMessage_close btn btn-default">Zavrieť</button>
+  </div>
 
-<script>
+  <div id="errorMessage" class="well" style="max-width:44em; display:none">
+    <h4>Pri nahrávaní gpx súboru nastala chyba</h4>
+    
+    <p><%= error_message if defined?(error_message) %></p>
+    <button class="errorMessage_close btn btn-default">Zavrieť</button>
+  </div>
+
+  <script src="../<%= versioned_javascript 'jquery' %>"></script>
+  <script src="../<%= versioned_javascript 'vis.min' %>"></script>
+  <script src="../<%= versioned_javascript 'leaflet' %>"></script>
+  <script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
+  <script src="../<%= versioned_javascript 'leaflet-hash' %>"></script>
+  <script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
+  <script src="../<%= versioned_javascript 'strftime' %>"></script>
+
+  <script>
 <%= js %>
-</script>
-<% if defined?(geojson) %>
-  <script src="../<%= geojson %>"></script>
-<% end %>
+  </script>
+  <% if defined?(geojson) %>
+    <script src="../<%= geojson %>"></script>
+  <% end %>
 
-<script src="../<%= versioned_javascript 'app' %>"></script>
+  <script src="../<%= versioned_javascript 'app' %>"></script>
 
-<script>
-  (function(i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function() {
-      (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date();
-    a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m)
-  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+              m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-66097156-1', 'auto');
-  ga('send', 'pageview');
-</script>
+    ga('create', 'UA-66097156-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 </body>
 </html>

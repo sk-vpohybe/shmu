@@ -59,28 +59,43 @@ def geojson_of_latest_n_minutes_of_radar_images n=60
 end
 
 get '/' do
-  erb :radar, :locals => {:title => 'Kde práve prší?', :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu';"}
+  error_msg = params[:error_message]
+  erb :radar, 
+    :locals => {:error_message => error_msg, 
+    :title => 'Kde práve prší?', 
+    :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
 end
 
 post '/upload_gpx' do
   timestamp = Time.now.strftime('%Y%m%d_%H%M%S')
-  if params[:file]
+  unique_gpx_filename = nil
+  error_message = nil
+  
+  begin
     filename = params[:file][:filename]
     file = params[:file][:tempfile]
-
-    unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
     gpx = file.read
-    File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
-  
-    geojson = gpx_to_geojson(gpx)
-    track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
-    File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
-      |f| f.write("trackToDisplay = #{geojson};") 
+
+    if(gpx.size < 2000000)
+      unique_gpx_filename = "#{timestamp}_#{filename.gsub(' ', '_')}"
+      File.open("./public/gpx/#{unique_gpx_filename}", 'wb') { |f| f.write(gpx) }
+ 
+      geojson = gpx_to_geojson(gpx)
+      track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
+      File.open("./public/#{track_as_geojson_js_filename}", 'wb') do
+        |f| f.write("trackToDisplay = #{geojson};") 
+      end
+    else
+      error_message = "súbor nemôže byť väčší ako 2MB"
     end
+  rescue  => e   
+    error_message = "#{e} #{e.class}"
+  end
   
-    redirect "/gpx/#{unique_gpx_filename}.html"
+  if error_message
+    redirect "/?error_message=#{CGI.escape(error_message)}"
   else
-    
+    redirect "/gpx/#{unique_gpx_filename}.html"
   end
 end
 

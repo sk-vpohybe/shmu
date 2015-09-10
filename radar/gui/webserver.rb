@@ -74,13 +74,6 @@ def geojson_of_latest_n_minutes_of_radar_images n=60
   output.to_json
 end
 
-get '/' do
-  error_msg = params[:error_message]
-  erb :radar, 
-    :locals => {:error_message => error_msg, 
-    :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
-end
-
 post '/upload_gpx' do
   timestamp = Time.now.strftime('%Y%m%d_%H%M%S')
   unique_gpx_filename = nil
@@ -125,4 +118,11 @@ get '/track/:unique_gpx_filename' do
     redirect "/?error_message=#{CGI.escape(error_message)}"
   end
 
+end
+
+get '/*' do
+  error_msg = params[:error_message]
+  erb :radar, 
+    :locals => {:error_message => error_msg, 
+    :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
 end

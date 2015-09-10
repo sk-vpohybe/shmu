@@ -5,6 +5,13 @@ require 'active_support'
 require "active_support/core_ext"
 require 'erb'
 
+# take only each n-th point from large gpx files
+module Enumerable
+  def every_nth(n)
+    (n - 1).step(self.size - 1, n).map { |i| self[i] }
+  end
+end 
+
 set :port, 1701
 set :bind, '0.0.0.0'
 set :environment, :production if (ARGV[0] && ARGV[0] == 'production')
@@ -21,9 +28,18 @@ helpers do
 end
 
 def gpx_to_geojson gpx
+  sampling = 1
+  if gpx.size > 1500000
+    sampling = 4
+  elsif gpx.size > 1000000
+    sampling = 3
+  elsif gpx.size > 500000
+    sampling = 2
+  end
+      
   h = Hash.from_xml gpx
-  lon_lats = h['gpx']['trk']['trkseg']['trkpt'].collect{|e| [e['lon'], e['lat']]}
-  time = h['gpx']['trk']['trkseg']['trkpt'].collect{|e| Time.parse(e['time']).to_i*1000}
+  lon_lats = h['gpx']['trk']['trkseg']['trkpt'].every_nth(sampling).collect{|e| [e['lon'], e['lat']]}
+  time = h['gpx']['trk']['trkseg']['trkpt'].every_nth(sampling).collect{|e| Time.parse(e['time']).to_i*1000}
 
   output = {
     "type" => "Feature",

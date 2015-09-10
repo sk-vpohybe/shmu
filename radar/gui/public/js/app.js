@@ -21,6 +21,7 @@ if(typeof(openErrorMessagePopup) != 'undefined' && openErrorMessagePopup == true
 $('#uploadGpxButton').click(function() {
     if ($('#gpxFileToUpload')[0].value != '') {
         $('#uploadGpxButton').prop('disabled', true);
+        $('#uploadGpxButton').text("Nahrávam...");
         $('#uploadGpxForm').submit();
     }
 });

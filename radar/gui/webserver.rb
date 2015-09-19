@@ -16,6 +16,9 @@ set :port, 1701
 set :bind, '0.0.0.0'
 set :environment, :production if (ARGV[0] && ARGV[0] == 'production')
 
+enable :sessions
+set :session_secret, 'whatever'
+
 helpers do
   
   def versioned_javascript js
@@ -75,7 +78,6 @@ def geojson_of_latest_n_minutes_of_radar_images n=60
 end
 
 post '/upload_gpx' do
-  timestamp = Time.now.strftime('%Y%m%d_%H%M%S')
   unique_gpx_filename = nil
   error_message = nil
   
@@ -112,17 +114,28 @@ get '/track/:unique_gpx_filename' do
   
   if unique_gpx_filename =~ /^[0-9a-zA-Z]*$/ && File.exists?("public/gpx/#{unique_gpx_filename}")# safety check
     track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
-    erb :radar, :locals => { :unique_gpx_filename => unique_gpx_filename, :geojson => track_as_geojson_js_filename, :js => "gpx = true;"}
+    erb :radar, :locals => { :unique_gpx_filename => unique_gpx_filename, :geojson => track_as_geojson_js_filename, :js => "gpx = true; mapType = '#{session["map_type"]}'; "}
   else
     error_message = "Trasa s identifikátorom '#{unique_gpx_filename}' sa nenašla."
     redirect "/?error_message=#{CGI.escape(error_message)}"
   end
+end
 
+get '/T' do
+  session['map_type'] = 'T'
+  redirect '/'
+end
+
+get '/C' do
+  session['map_type'] = 'C'
+  redirect '/'
 end
 
 get '/*' do
+  session["map_type"] ||= 'C'
+  
   error_msg = params[:error_message]
   erb :radar, 
     :locals => {:error_message => error_msg, 
-    :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
+    :js => "mapType = '#{session["map_type"]}'; gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
 end

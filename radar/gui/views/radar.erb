@@ -13,7 +13,7 @@
 
   <body>
     <div id="logo"> 
-      <a href="http://radar.cyklonaut.sk"><img src="../images/logo.svg" style="height:100%" /></a>
+      <a href="/"><img src="../images/logo.svg" style="height:100%" /></a>
     </div>
     <div id="header">  
       <% if defined?(unique_gpx_filename) %>
@@ -38,10 +38,16 @@
     <button class="launchGpxUpload_close btn btn-default">Zrušiť</button>
   </div>
 
-  <div id="oProjekte" class="well" style="max-width:44em; display:none">
-    <h4>O projekte radar.cyklonaut.sk</h4>
+  <div id="oProjekte" class="well" style="max-width:44em; display:none; font-size: 95%">
+    <p>Portál radar.cyklonaut.sk je iniciatíva občianskeho združenia <a href="http://www.v-pohybe.sk/">Slovensko v pohybe</a>, ktoré prevádzkuje portály <a href="https://nabezky.sk">nabežky.sk</a> a <a href="http://cyklonaut.sk">cyklonaut.sk</a>.</p>
 
-    <p>Tento portál je iniciatíva občianskeho združenia <a href="http://www.v-pohybe.sk/">Slovensko v pohybe</a>, ktoré prevádzkuje portály <a href="https://nabezky.sk">nabežky.sk</a> a <a href="http://cyklonaut.sk">cyklonaut.sk</a>.</p>
+    <p>Mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
+
+    <% if session["map_type"] == 'T' %>
+      <a class="initialism btn btn-success" href="/C" style="margin-bottom: 8px">Prepnúť mapu z turistickej na cyklistickú</a>
+    <% else %>
+      <a class="initialism btn btn-success" href="/T" style="margin-bottom: 8px">Prepnúť mapu z cyklistickej na turistickú</a>
+    <% end %>
 
     <p>Nad mapou krajiny zobrazujeme zlúčenú mapu rádiolokačnej odrazivosti, ktorá zobrazuje množstvo spadnutých zrážok. 
       Radarové zábery preberáme zo Slovenského hydrometeorologického ústavu. 
@@ -57,7 +63,7 @@
       <span style="background-color: #d80800;" class="colorLegend">100&nbsp;mm/h</span>
     </p>
 
-    <p>Turistickú mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
+
 
     <p>Podnety a otázky môžete posielať na <b>info@cyklonaut.sk</b></p>
 

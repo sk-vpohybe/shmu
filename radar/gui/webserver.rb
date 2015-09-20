@@ -13,15 +13,10 @@ class Rainfall
   GIF_X_SIZE = 600
   GIF_Y_SIZE = 480
 
-  attr_reader :lat, :lon, :data
+  attr_reader :data
   
-  def initialize lat, lon
-    @lat = lat
-    @lon = lon
-    
-    
+  def initialize days, lat, lon
     x, y = to_pixel_position lat, lon
-    days = 3
     
     t2 = Time.now
     t2 = t2 - (t2.min % 5)*60
@@ -70,11 +65,11 @@ class Rainfall
 
   def to_pixel_position lat, lon
     if lat > BOUNDING_LAT_1 || lat < BOUNDING_LAT_0
-      raise "latitude not in (46.449212403852584 .. 49.92602987536322 range)"
+      raise "latitude #{lat.inspect} not in (46.449212403852584 .. 49.92602987536322 range)"
     end
   
     if lon > BOUNDING_LON_1 || lon < BOUNDING_LON_0
-      raise "longitude not in (16.21358871459961 .. 22.70427703857422 range)"
+      raise "longitude #{lon.inspect} not in (16.21358871459961 .. 22.70427703857422 range)"
     end 
   
     x = (((lon - BOUNDING_LON_0) / (BOUNDING_LON_1 - BOUNDING_LON_0)) * GIF_X_SIZE).round(0)
@@ -135,8 +130,19 @@ end
 get '/:lat/:lon' do
   lat = params[:lat].to_f
   lon = params[:lon].to_f
-  rainfall = Rainfall.new lat, lon
+  
+  days = 1
+  if params[:days]
+    days = params[:days].to_i
+    days = 7 if days > 7
+  end
+  
+  rainfall = Rainfall.new days, lat, lon
   erb :radar, 
     :locals => { :rainfall => rainfall,
-    :js => "trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulé tri dni'; gardenLat = #{lat}; gardenLon = #{lon}"}
+    :js => "trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images(60*24*days)}; trackName = 'Zrážky za uplynulých pár dní'; gardenLat = #{lat}; gardenLon = #{lon}"}
+end
+
+get '/*' do
+  redirect '/48.5614/19.7369?days=1'
 end

@@ -6,6 +6,8 @@ radar_overlay1 = null;
 radar_overlay2 = null;
 positionHash = null;
 
+$('#showRainfall').popup();
+
 radarImageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
 playbackTracks = [trackToDisplay];
@@ -46,6 +48,10 @@ crosshair.addTo(map);
 // Move the crosshair to the center of the map when the user pans
 map.on('move', function(e) {
     crosshair.setLatLng(map.getCenter());
+});
+
+$("#showRainfallButton").click(function() {
+    window.location = '/' + map.getCenter().lat + '/' + map.getCenter().lng + '?days=3';
 });
 
 var playbackOptions = {

@@ -12,9 +12,16 @@
   </head>
 
   <body>
+    <div id="header">  
+      <a class="initialism btn btn-success showRainfall_open" href="#showRainfall" style="font-size: 90%" id="showRainfallButton">Zobraz zrážkovú históriu pre bod v strede mapy</a>
+    </div>
     <div id="map"></div>
     <div id="timeline"></div>
     <canvas id="gardenChart"></canvas>
+
+    <div id="showRainfall" class="well" style="max-width:44em; display:none">
+      Pracujem..
+    </div>
 
     <script src="../<%= versioned_javascript 'jquery' %>"></script>
     <script src="../<%= versioned_javascript 'chart.min' %>"></script>
@@ -49,16 +56,14 @@
         ]
       };
 
-
-
       var ctx = $("#gardenChart").get(0).getContext("2d");
-      var gardenChart = new Chart(ctx).Line(data, {showTooltips: false, 
-      animation: false, 
-      scaleShowLabels: false,
-      scaleOverride: true, 
-      scaleSteps: 5, 
-      scaleStepWidth: 0.2, 
-      scaleStartValue: 0.0});
+      var gardenChart = new Chart(ctx).Line(data, {showTooltips: false,
+        animation: false,
+        scaleShowLabels: false,
+        scaleOverride: true,
+        scaleSteps: 5,
+        scaleStepWidth: 0.2,
+        scaleStartValue: 0.0});
 
     </script>      
   </body>

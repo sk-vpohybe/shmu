@@ -6,13 +6,15 @@
     bottom: 320px;
 }
 
-#graph {
+#gardenChart {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 120px;
     height: 200px; 
+    width: 92%;
+    display: block;
+    margin: 0 auto;
 }
 
 #timeline { 
@@ -20,7 +22,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 200px;
+    bottom: 0;
 }
 
 .vis.timeline .item {
@@ -68,10 +70,6 @@ h1 {
 .datetimeControl p {
     margin: 0;
     font-size: 16px;
-}
-
-.leaflet-top{
-    padding-top: 40px;
 }
 
 .colorLegend {

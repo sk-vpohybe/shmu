@@ -32,10 +32,21 @@ map = new L.Map('map', {minZoom: 7, maxZoom: 15});
 
 basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/T/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
-map.setView([48.74157, 19.35118], 8);
+map.setView([gardenLat, gardenLon], 9);
 
 map.addLayer(basemapLayer);
+
+L.marker([gardenLat, gardenLon]).addTo(map);
+
 positionHash = new L.Hash(map);
+
+crosshair = new L.circleMarker(map.getCenter(), {clickable:false});
+crosshair.addTo(map);
+
+// Move the crosshair to the center of the map when the user pans
+map.on('move', function(e) {
+    crosshair.setLatLng(map.getCenter());
+});
 
 var playbackOptions = {
     playControl: true,

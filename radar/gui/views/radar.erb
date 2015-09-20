@@ -14,9 +14,10 @@
   <body>
     <div id="map"></div>
     <div id="timeline"></div>
-    <div id="graph"></div>
+    <canvas id="gardenChart"></canvas>
 
     <script src="../<%= versioned_javascript 'jquery' %>"></script>
+    <script src="../<%= versioned_javascript 'chart.min' %>"></script>
     <script src="../<%= versioned_javascript 'vis.min' %>"></script>
     <script src="../<%= versioned_javascript 'leaflet' %>"></script>
     <script src="../<%= versioned_javascript 'LeafletPlayback.min' %>"></script>
@@ -25,12 +26,40 @@
     <script src="../<%= versioned_javascript 'strftime' %>"></script>
 
     <script>
-  <%= js %>
+<%= js %>
     </script>
     <% if defined?(geojson) %>
       <script src="../<%= geojson %>"></script>
     <% end %>
 
     <script src="../<%= versioned_javascript 'app' %>"></script>
+
+    <script>
+      var data = {
+        labels: <%= rainfall.data.collect{|h| ''} %>,
+        datasets: [
+          {
+            label: "Zrážky",
+            fillColor: "rgba(0,0,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,0.5)",
+            data: <%= rainfall.data.collect{|h| h[:mm].round(2)} %>
+          }
+        ]
+      };
+
+
+
+      var ctx = $("#gardenChart").get(0).getContext("2d");
+      var gardenChart = new Chart(ctx).Line(data, {showTooltips: false, 
+      animation: false, 
+      scaleShowLabels: false,
+      scaleOverride: true, 
+      scaleSteps: 5, 
+      scaleStepWidth: 0.2, 
+      scaleStartValue: 0.0});
+
+    </script>      
   </body>
 </html>

@@ -43,7 +43,7 @@
 
     <p>Mapu krajiny preberáme z portálu <a href="http://freemap.sk">freemap.sk</a>, ktorý vytvára mapy Slovenska (aj) na základe údajov z portálu <a href="http://openstreetmap.org">openstreetmap.org</a>.</p>
 
-    <% if session["map_type"] == 'T' %>
+    <% if map_type == 'T' %>
       <a class="initialism btn btn-success" href="/C" style="margin-bottom: 8px">Prepnúť mapu z turistickej na cyklistickú</a>
     <% else %>
       <a class="initialism btn btn-success" href="/T" style="margin-bottom: 8px">Prepnúť mapu z cyklistickej na turistickú</a>
@@ -62,8 +62,6 @@
       <span style="background-color: #fc6400;" class="colorLegend">24&nbsp;mm/h</span>
       <span style="background-color: #d80800;" class="colorLegend">100&nbsp;mm/h</span>
     </p>
-
-
 
     <p>Podnety a otázky môžete posielať na <b>info@cyklonaut.sk</b></p>
 

@@ -25,7 +25,7 @@ class Rainfall
     
     filenames = (0..(days*24*12)).to_a.collect do |i|
       t = t1 + (i * 60 * 5)
-      "/home/peter/Desktop/t/#{t.strftime '%Y%m%d'}/#{t.strftime '%Y%m%d_%H%M'}.gif"
+      "/srv/shmu/radary/#{t.strftime '%Y%m%d'}/#{t.strftime '%Y%m%d_%H%M'}.gif"
     end
     
     detailed_data = filenames.collect do |filename|

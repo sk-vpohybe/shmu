@@ -11,23 +11,6 @@ radarImageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322,
 playbackTracks = [trackToDisplay];
 startTime = new Date(playbackTracks[0].properties.time[0]);
 endTime = new Date(playbackTracks[0].properties.time[playbackTracks[0].properties.time.length - 1]);
-$('#oProjekte').popup();
-$('#launchGpxUpload').popup();
-$('#errorMessage').popup();
-
-if($('#share'))
-    $('#share').popup();
-
-if(typeof(openErrorMessagePopup) != 'undefined' && openErrorMessagePopup == true)
-    $('#errorMessage').popup('show');
-
-$('#uploadGpxButton').click(function() {
-    if ($('#gpxFileToUpload')[0].value != '') {
-        $('#uploadGpxButton').prop('disabled', true);
-        $('#uploadGpxButton').text("Nahrávam...");
-        $('#uploadGpxForm').submit();
-    }
-});
 
 // Create a DataSet with data
 var timelineData = new vis.DataSet([{start: startTime, end: endTime, content: trackName}]);
@@ -47,14 +30,9 @@ timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, t
 // Setup leaflet map
 map = new L.Map('map', {minZoom: 7, maxZoom: 15});
 
-basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+mapType+'/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
+basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/T/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
-if (gpx){
-    var lotLan = playbackTracks[0].geometry.coordinates[0];
-    map.setView([lotLan[1], lotLan[0]], 10);
-    }
-else
-    map.setView([48.74157, 19.35118], 8);
+map.setView([48.74157, 19.35118], 8);
 
 map.addLayer(basemapLayer);
 positionHash = new L.Hash(map);
@@ -92,26 +70,17 @@ var playbackOptions = {
             return result;
         }
     }
-
 };
 
 playback = new L.Playback(map, null, onPlaybackTimeChange, playbackOptions);
 playback.setData(playbackTracks);
 playback.addData(playbackTracks[0]);
-playback.setSpeed(500);
 
 timeline.on('timechange', onCustomTimeChange);
 
-if (gpx)
-    timeline.setCustomTime(startTime);
-else {
-    timeline.setCustomTime(endTime);
-    adjustRadarImage(endTime - 1000 * 60 * 5);
-    $('.leaflet-control-layers').hide();
-}
-
-$(".leaflet-control-layers-overlays span").eq(0).text('Zobraziť trasu');
-$(".playControl button").text('Animovať trasu');
+timeline.setCustomTime(endTime);
+adjustRadarImage(endTime - 1000 * 60 * 10);
+$('.leaflet-control-layers').hide();
 
 function onCustomTimeChange(properties) {
     if (!playback.isPlaying()) {
@@ -129,8 +98,8 @@ function onPlaybackTimeChange(ms) {
 function adjustRadarImage(ms) {
     seconds_since_unix_epoch = parseInt(ms / 1000);
     upcoming_radar_overlay1_timestamp = seconds_since_unix_epoch - (seconds_since_unix_epoch % 300);
-    upcoming_radar_overlay2_timestamp = upcoming_radar_overlay1_timestamp + 5 * 60;
-    attitude_towards_overlay2 = (upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (5 * 60);
+    upcoming_radar_overlay2_timestamp = upcoming_radar_overlay1_timestamp + 10 * 60;
+    attitude_towards_overlay2 = (upcoming_radar_overlay2_timestamp - seconds_since_unix_epoch) / (10 * 60);
 
 
     if (upcoming_radar_overlay1_timestamp !== displayed_radar_overlay1_timestamp) {

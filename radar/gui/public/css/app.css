@@ -1,44 +1,26 @@
-#header {
-    height: 40px ;
-    padding: 3px;
-    text-align: right;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1001;
-}
-
-#logo {
-    height: 40px ;
-    padding: 3px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0; 
-    z-index: 1001;
-    background-color: rgba(255,255,255,0.8);
-}
-
 #map {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 120px;
+    bottom: 320px;
 }
 
-#title_container {
-    z-index: 10000;
+#graph {
     position: absolute;
-    left: 100px;
-}    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 200px; 
+}
 
 #timeline { 
     height: 120px; 
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 200px;
 }
 
 .vis.timeline .item {

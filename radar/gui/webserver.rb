@@ -141,8 +141,7 @@ get '/*' do
     response.set_cookie 'map_type', :value=> 'C', :max_age => "2592000"
   end
   
-  map_type = request.cookies['map_type']
-  
+  map_type = request.cookies['map_type'] || 'C'
   error_msg = params[:error_message]
   erb :radar, 
     :locals => {:error_message => error_msg, 

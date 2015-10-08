@@ -47,7 +47,7 @@ timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, t
 // Setup leaflet map
 map = new L.Map('map', {minZoom: 7, maxZoom: 15});
 
-basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+mapType+'/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
+basemapLayer = new L.TileLayer('http://a.freemap.sk/'+mapType+'/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
 if (gpx){
     var lotLan = playbackTracks[0].geometry.coordinates[0];

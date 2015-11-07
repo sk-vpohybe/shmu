@@ -52,7 +52,12 @@ basemapLayer = new L.TileLayer('http://a.freemap.sk/'+mapType+'/{z}/{x}/{y}.jpeg
 if (gpx){
     var lotLan = playbackTracks[0].geometry.coordinates[0];
     map.setView([lotLan[1], lotLan[0]], 10);
-    }
+}
+else if(typeof(localityLat) != 'undefined'  && typeof(localityLon) != 'undefined'){
+    map.setView([localityLat, localityLon], 11);
+    new L.CircleMarker([localityLat, localityLon], {color: 'red', opacity: 0.7, fillOpacity: 0.7, radius: 15}).addTo(map)
+
+}
 else
     map.setView([48.74157, 19.35118], 8);
 

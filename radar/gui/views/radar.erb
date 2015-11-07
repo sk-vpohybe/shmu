@@ -1,9 +1,16 @@
 <html>
   <head>
-    <title>radar.cyklonaut.sk - Aktuálne zrážkové informácie na detailnej mape</title>
+    <% if defined?(locality_original_name)%>
+      <title>Aktuálne zrážkové informácie pre obec <%= locality_original_name %></title>
+      <meta name="description" content="Aktuálne radarové zábery zrážok pre obec <%= locality_original_name %> na zoomovateľnej mape"> 
+    <% else %>
+      <title>radar.cyklonaut.sk - Aktuálne zrážkové informácie na detailnej mape</title>
+      <meta name="description" content="Aktuálne radarové zábery zrážok na zoomovateľnej mape"> 
+    <% end %>
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aktuálne radarové zábery zrážok na zoomovateľnej mape"> 
+    
     
     <link href="../<%= versioned_css 'leaflet' %>" rel="stylesheet" type="text/css" />
     <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />  

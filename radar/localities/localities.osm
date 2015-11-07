@@ -3,6 +3,13 @@
 <note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
 <meta osm_base="2015-11-07T14:21:02Z"/>
 
+<!--
+<query type="node">
+  <has-kv k="place" v="city|town|village"/>
+  <has-kv k="is_in" regv="Slovensko"/>
+</query>
+<print/>
+ -->
 
   <node id="26037142" lat="48.8923583" lon="18.0393715">
     <tag k="city_id" v="505820"/>

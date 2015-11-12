@@ -2,28 +2,31 @@
   <head>
     <% if defined?(locality_original_name)%>
       <title>Aktuálne zrážkové informácie pre obec <%= locality_original_name %></title>
-      <meta name="description" content="Aktuálne radarové zábery zrážok pre obec <%= locality_original_name %> na zoomovateľnej mape"> 
+      <meta name="description" content="Aktuálne radarové zábery zrážok pre obec <%= locality_original_name %> na zoomovateľnej mape">
+      <meta name="keywords" content="<%= locality_original_name %>, počasie, dážď, zrážky, sneh, mapa, radar, oblaky" />
     <% else %>
       <title>Aktuálne zrážkové informácie na detailnej mape</title>
-      <meta name="description" content="Aktuálne radarové zábery zrážok na zoomovateľnej mape"> 
+      <meta name="description" content="Aktuálne radarové zábery zrážok na zoomovateľnej mape">
+      <meta name="keywords" content="počasie, dážď, zrážky, sneh, mapa, radar, oblaky, gps" />
     <% end %>
-    
+
     <meta charset="utf-8" />
+    <meta name="robots" content="index,follow" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
+
     <link href="../<%= versioned_css 'leaflet' %>" rel="stylesheet" type="text/css" />
-    <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />  
-    <link href="../<%= versioned_css 'bootstrap.min' %>" rel="stylesheet" type="text/css" />     
-    <link href="../<%= versioned_css 'app' %>" rel="stylesheet" type="text/css" />   
+    <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />
+    <link href="../<%= versioned_css 'bootstrap.min' %>" rel="stylesheet" type="text/css" />
+    <link href="../<%= versioned_css 'app' %>" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="logo"> 
+    <div id="logo">
       <a href="/"><img src="../images/logo.svg" style="height:100%" /></a>
     </div>
-    <div id="header">  
+    <div id="header">
       <% if defined?(unique_gpx_filename) %>
         <a class="initialism share_open btn btn-success" href="#share">Zdieľať</a>
       <% end %>
@@ -57,8 +60,8 @@
       <a class="initialism btn btn-success" href="/T" style="margin-bottom: 8px">Prepnúť mapu z cyklistickej na turistickú</a>
     <% end %>
 
-    <p>Nad mapou krajiny zobrazujeme zlúčenú mapu rádiolokačnej odrazivosti, ktorá zobrazuje množstvo spadnutých zrážok. 
-      Radarové zábery preberáme zo Slovenského hydrometeorologického ústavu. 
+    <p>Nad mapou krajiny zobrazujeme zlúčenú mapu rádiolokačnej odrazivosti, ktorá zobrazuje množstvo spadnutých zrážok.
+      Radarové zábery preberáme zo Slovenského hydrometeorologického ústavu.
       Pre viac informácií o radarových záberoch <a href="http://www.shmu.sk/sk/?page=1&id=meteo_radar">navštívte stránku SHMÚ</a>.</p>
 
     <p>Farba "oblakov" zodpovedá úhrnu zrážok za hodinu: <br />

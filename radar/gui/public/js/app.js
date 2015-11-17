@@ -59,7 +59,10 @@ else if(typeof(localityLat) != 'undefined'  && typeof(localityLon) != 'undefined
 
 }
 else
-    map.setView([48.74157, 19.35118], 8);
+{
+    if (!map.restoreView())
+      map.setView([48.74157, 19.35118], 8);
+}
 
 map.addLayer(basemapLayer);
 positionHash = new L.Hash(map);

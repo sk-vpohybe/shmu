@@ -38,8 +38,17 @@ def gpx_to_geojson gpx
   end
       
   h = Hash.from_xml gpx
-  lon_lats = h['gpx']['trk']['trkseg']['trkpt'].every_nth(sampling).collect{|e| [e['lon'], e['lat']]}
-  time = h['gpx']['trk']['trkseg']['trkpt'].every_nth(sampling).collect{|e| Time.parse(e['time']).to_i*1000}
+  trksegments = h['gpx']['trk']['trkseg']
+  if(trksegments.class == Hash)
+    trksegments = [trksegments]
+  end
+ 
+  lon_lats = []
+  time = []
+  trksegments.each do |trkseg|
+    lon_lats << trkseg['trkpt'].every_nth(sampling).collect{|e| [e['lon'], e['lat']]}
+    time << trkseg['trkpt'].every_nth(sampling).collect{|e| Time.parse(e['time']).to_i*1000}
+  end
 
   output = {
     "type" => "Feature",

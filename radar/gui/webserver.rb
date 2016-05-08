@@ -126,7 +126,7 @@ get '/track/:unique_gpx_filename' do
   if unique_gpx_filename =~ /^[0-9a-zA-Z]*$/ && File.exists?("public/gpx/#{unique_gpx_filename}")# safety check
     track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
     
-    map_type = request.cookies['map_type']
+    map_type = request.cookies['map_type'] || 'C'
     
     erb :radar, 
       :locals => { :unique_gpx_filename => unique_gpx_filename, 

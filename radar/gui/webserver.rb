@@ -46,8 +46,10 @@ def gpx_to_geojson gpx
   lon_lats = []
   time = []
   trksegments.each do |trkseg|
-    lon_lats << trkseg['trkpt'].every_nth(sampling).collect{|e| [e['lon'], e['lat']]}
-    time << trkseg['trkpt'].every_nth(sampling).collect{|e| Time.parse(e['time']).to_i*1000}
+    trkseg['trkpt'].every_nth(sampling).each do |trkpt|
+      lon_lats << [trkpt['lon'], trkpt['lat']]
+      time << Time.parse(trkpt['time']).to_i*1000
+    end
   end
 
   output = {

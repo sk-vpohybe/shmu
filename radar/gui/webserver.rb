@@ -96,6 +96,9 @@ post '/upload_gpx' do
       error_message = "súbor nemôže byť väčší ako 2MB"
     end
   rescue  => e   
+    puts e
+    puts e.class
+    puts e.backtrace
     error_message = "#{e} #{e.class}"
   end
   

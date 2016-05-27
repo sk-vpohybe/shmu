@@ -1,0 +1,8 @@
+<% if defined?(unique_gpx_filename) %>
+  <div id="share" class="well" style="max-width:44em; display:none">
+    <p>Práve zobrazenú trasu je možné zdieľať preposlaním tejto URL adresy:</p>
+    <p><code style="background-color: white; padding: 4px">http://radar.cyklonaut.sk/track/<%= unique_gpx_filename %></code></p>
+
+    <button class="share_close btn btn-default">Zavrieť</button>
+  </div>
+<% end %>

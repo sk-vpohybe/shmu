@@ -1,0 +1,12 @@
+<div id="launchGpxUpload" class="well" style="max-width:44em; display:none">
+  <h4>Nahrať GPS záznam vo formáte .gpx</h4>
+
+  <p>GPS záznam sa zobrazí na mape spolu s časovo zodpovedajúcimi radarovými snímkami. Maximálna veľkosť súboru je 2&nbsp;MB.</p>
+  <p>
+  <form action="/upload_gpx" method="POST" enctype="multipart/form-data" id="uploadGpxForm">
+    <input type="file" name="file" id="gpxFileToUpload" />
+  </form>
+</p>
+<button class="btn btn-default" id="uploadGpxButton">Nahrať .gpx</button>
+<button class="launchGpxUpload_close btn btn-default">Zrušiť</button>
+</div>

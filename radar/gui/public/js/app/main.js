@@ -1,11 +1,30 @@
-function RadarApp() {
-  this.leafletMap = new LeafletMap()
-  this.positionHash = new L.Hash(this.leafletMap.map);
-  this.popups = new Popups()
-  this.timeline = new Timeline(this.leafletMap.map)
+function ServerSideOpts(){
+  this.mapType = mapType
+  this.gpx = gpx
+  this.trackToDisplay = trackToDisplay
+  this.trackName = trackName
+  this.openErrorMessagePopup = false
+  if(typeof(openErrorMessagePopup) != 'undefined')
+    this.openErrorMessagePopup = openErrorMessagePopup
+  
+  this.localityLat = null
+  if(typeof(localityLat) != 'undefined')
+    this.localityLat = localityLat
+    
+  this.localityLon = null
+  if(typeof(localityLon) != 'undefined')
+    this.localityLon = localityLon
 }
 
-function Popups(){
+function RadarApp() {
+  this.opts = new ServerSideOpts()
+  this.leafletMap = new LeafletMap(this.opts)
+  this.positionHash = new L.Hash(this.leafletMap.map);
+  this.popups = new Popups(this.opts.openErrorMessagePopup)
+  this.timeline = new Timeline(this.leafletMap.map, this.opts)
+}
+
+function Popups(openErrorMessagePopup){
   $('#oProjekte').popup();
   $('#launchGpxUpload').popup();
   $('#errorMessage').popup();
@@ -25,19 +44,19 @@ function Popups(){
   });  
 }
 
-function LeafletMap(){
+function LeafletMap(opts){
   this.map = new L.Map('map', {minZoom: 7, maxZoom: 15});
+  this.opts = opts
 
   basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+mapType+'/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
-  if (gpx){
-      var lotLan = playbackTracks[0].geometry.coordinates[0];
+  if (this.opts.gpx){
+      var lotLan = this.opts.trackToDisplay.geometry.coordinates[0];
       this.map.setView([lotLan[1], lotLan[0]], 10);
   }
-  else if(typeof(localityLat) != 'undefined'  && typeof(localityLon) != 'undefined'){
-      this.map.setView([localityLat, localityLon], 11);
-      new L.CircleMarker([localityLat, localityLon], {color: 'red', opacity: 0.7, fillOpacity: 0.7, radius: 15}).addTo(map)
-
+  else if(this.opts.localityLat && this.opts.localityLon){
+      this.map.setView([this.opts.localityLat, this.opts.localityLon], 11);
+      new L.CircleMarker([this.opts.localityLat, this.opts.localityLon], {color: 'red', opacity: 0.7, fillOpacity: 0.7, radius: 15}).addTo(this.map)
   }
   else
   {
@@ -49,7 +68,10 @@ function LeafletMap(){
 }
 
 
-function Timeline(map){
+function Timeline(map, opts){
+  this.map = map
+  this.opts = opts
+  
   upcoming_radar_overlay1_timestamp = null;
   displayed_radar_overlay1_timestamp = null;
   upcoming_radar_overlay2_timestamp = null;
@@ -59,7 +81,7 @@ function Timeline(map){
 
   radarImageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
-  playbackTracks = [trackToDisplay];
+  playbackTracks = [this.opts.trackToDisplay];
   startTime = new Date(playbackTracks[0].properties.time[0]);
   endTime = new Date(playbackTracks[0].properties.time[playbackTracks[0].properties.time.length - 1]);
 
@@ -118,7 +140,7 @@ function Timeline(map){
 
   };
 
-  playback = new L.Playback(map, null, onPlaybackTimeChange, playbackOptions);
+  playback = new L.Playback(this.map, null, onPlaybackTimeChange, playbackOptions);
   playback.setData(playbackTracks);
   playback.addData(playbackTracks[0]);
   playback.setSpeed(500);

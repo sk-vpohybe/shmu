@@ -155,7 +155,10 @@ function Timeline(map, opts){
       $('.leaflet-control-layers').hide();
   }
 
-  $(".leaflet-control-layers-overlays span").eq(0).text('Zobraziť trasu');
+  $(".leaflet-top.leaflet-right").hide()
+  var trackAsPolyline = this.opts.trackToDisplay
+  trackAsPolyline['geometry']['type'] = 'LineString'
+  L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
   $(".playControl button").text('Animovať trasu');
 
   function onCustomTimeChange(properties) {

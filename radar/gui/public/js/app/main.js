@@ -156,6 +156,7 @@ function Timeline(map, opts){
   }
 
   $(".leaflet-top.leaflet-right").hide()
+  $('.leaflet-bottom.leaflet-left').hide()
   var trackAsPolyline = this.opts.trackToDisplay
   trackAsPolyline['geometry']['type'] = 'LineString'
   L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);

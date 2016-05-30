@@ -11,6 +11,16 @@ class Numeric
   end
 end
 
+class Array
+  def sum
+    inject(0.0) { |result, el| result + el }
+  end
+
+  def mean 
+    sum / size.to_f
+  end
+end
+
 # http://www.movable-type.co.uk/scripts/latlong.html
 # loc1 and loc2 are arrays of [latitude, longitude]
 def haversine_km_distance loc1, loc2
@@ -44,6 +54,21 @@ helpers do
   end
 end
 
+def moving_ele_average trkseg, i
+  if(0 <= i-9 && trkseg[i+9] )
+    return trkseg[(i-9)..(i+9)].select do |pt| 
+      pt['ele']
+    end.collect do |pt|
+      pt['ele'].to_f
+    end.sort[3..-4].mean
+  else
+   
+    return nil
+  end
+  
+
+end
+
 def gpx_to_geojson gpx
   h = Hash.from_xml gpx
   trksegments = h['gpx']['trk']['trkseg']
@@ -53,8 +78,11 @@ def gpx_to_geojson gpx
  
   lon_lats = []
   time = []
-  time_to_distance = {}
+  time_to_distance_and_ele = {}
   total_distance = 0.0
+  total_ele_up = 0.0
+  total_ele_down = 0.0
+  prev_ele = nil
   
   trksegments.each do |trkseg|
     trkseg['trkpt'].each_with_index do |trkpt, i|
@@ -65,7 +93,23 @@ def gpx_to_geojson gpx
       if next_pt
         distance = haversine_km_distance([trkpt['lat'], trkpt['lon']], [next_pt['lat'], next_pt['lon']])
         total_distance += distance
-        time_to_distance[t] = total_distance.round(1)
+        time_to_distance_and_ele[t] = [total_distance.round(1)]
+        
+        ele = moving_ele_average trkseg['trkpt'], i
+        if(ele && prev_ele)
+          ele_diff = ele - prev_ele
+          if(0 < ele_diff)
+            total_ele_up += ele_diff
+          else
+            total_ele_down += ele_diff
+          end
+          time_to_distance_and_ele[t] << total_ele_up.round(0)
+          time_to_distance_and_ele[t] << total_ele_down.round(0)
+        else
+          time_to_distance_and_ele[t] << total_ele_up.round(0)
+          time_to_distance_and_ele[t] << total_ele_down.round(0)
+        end
+        prev_ele = ele       
       end
     end
   end
@@ -78,7 +122,7 @@ def gpx_to_geojson gpx
     },
     "properties"  => {
       "time"  => time,
-      "time_to_distance" => time_to_distance
+      "time_to_distance_and_ele" => time_to_distance_and_ele
     }
   }
   

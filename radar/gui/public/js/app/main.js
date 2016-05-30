@@ -179,21 +179,28 @@ function Timeline(map, opts){
   }
   
    function updateDistanceText(ms){
-    if(playbackTracks[0].properties.time_to_distance == null){
+    if(playbackTracks[0].properties.time_to_distance_and_ele == null){
         return(null)
     }
     var roundMs = ms - (ms % 1000)
-    var distance = null
+    var distance_and_eles = null
     var subtractions = 0
-    while(distance == null){     
-    distance = playbackTracks[0].properties.time_to_distance[roundMs]
+    while(distance_and_eles == null){     
+    distance_and_eles = playbackTracks[0].properties.time_to_distance_and_ele[roundMs]
     roundMs -= 1000
     subtractions++
     if(50 < subtractions)
         break
     }
-    if(distance){
-        $($('.content')[1]).html('Vzdialenosť: '+ distance +' km')
+    if(distance_and_eles){
+        var distance = distance_and_eles[0]
+        var ele_up = distance_and_eles[1] || 0
+        var ele_down = distance_and_eles[2] || 0
+        var info = '↦ '+ distance +' km&nbsp;&nbsp;'
+        info += '⇡ '+ele_up + ' m&nbsp;&nbsp;'
+        info += '⇣ '+ele_down + ' m'
+        $($('.content')[1]).html(info)
+        
     }
   }
 

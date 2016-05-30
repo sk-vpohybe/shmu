@@ -38,6 +38,9 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+      <li><a onclick="radarApp.leafletMap.changeMapType('T')" href="#">Turistická mapa <span id="turisticMapEnabled" style="display:none">✓</span></a></li>
+      <li><a onclick="radarApp.leafletMap.changeMapType('C')" href="#">Cyklo mapa <span id="cycloMapEnabled" style="display:none">✓</span></a></li>
+      <li role="separator" class="divider"></li>
       <% if defined?(unique_gpx_filename) %>
         <li><a class="share_open" href="#share">Zdieľať</a></li>
       <% end %>

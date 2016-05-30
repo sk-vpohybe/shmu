@@ -145,13 +145,10 @@ get '/track/:unique_gpx_filename' do
   if unique_gpx_filename =~ /^[0-9a-zA-Z]*$/ && File.exists?("public/gpx/#{unique_gpx_filename}")# safety check
     track_as_geojson_js_filename = "gpx/#{unique_gpx_filename}.geojson.js"
     
-    map_type = request.cookies['map_type'] || 'C'
-    
     erb :radar, 
       :locals => { :unique_gpx_filename => unique_gpx_filename, 
-      :map_type => map_type,
       :geojson => track_as_geojson_js_filename, 
-      :js => "gpx = true; mapType = '#{map_type}'; "}
+      :js => "gpx = true;"}
     
   else
     error_message = "Trasa s identifikátorom '#{unique_gpx_filename}' sa nenašla."
@@ -159,45 +156,23 @@ get '/track/:unique_gpx_filename' do
   end
 end
 
-get '/T' do
-  response.set_cookie 'map_type', :value=> 'T', :max_age => "2592000"
-  redirect '/'
-end
-
-get '/C' do
-  response.set_cookie 'map_type', :value=> 'C', :max_age => "2592000"
-  redirect '/'
-end
-
 Marshal.load(File.read('./localities.raw')).each do |locality_original_name, locality_url_name, localityLat, localityLon|
   get "/#{locality_url_name}" do
-    unless request.cookies['map_type']
-      response.set_cookie 'map_type', :value=> 'C', :max_age => "2592000"
-    end
-
-    map_type = request.cookies['map_type'] || 'C'
 
     error_msg = params[:error_message]
     erb :radar, 
       :locals => {:error_message => error_msg, 
         :locality_original_name => locality_original_name,
-      :map_type => map_type,
-      :js => "mapType = '#{map_type}'; gpx = false; localityLat = #{localityLat}; localityLon = #{localityLon}; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = '#{locality_original_name}: zrážky za uplynulú hodinu'"}
+      :js => "gpx = false; localityLat = #{localityLat}; localityLon = #{localityLon}; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = '#{locality_original_name}: zrážky za uplynulú hodinu'"}
 
   end  
 end
 
 
 get '/*' do
-  unless request.cookies['map_type']
-    response.set_cookie 'map_type', :value=> 'C', :max_age => "2592000"
-  end
-  
-  map_type = request.cookies['map_type'] || 'C'
   error_msg = params[:error_message]
   erb :radar, 
     :locals => {:error_message => error_msg, 
-    :map_type => map_type,
-    :js => "mapType = '#{map_type}'; gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
+    :js => "gpx = false; trackToDisplay = #{geojson_of_latest_n_minutes_of_radar_images}; trackName = 'Zrážky za uplynulú hodinu'; openErrorMessagePopup = #{!error_msg.nil?};"}
 end
 

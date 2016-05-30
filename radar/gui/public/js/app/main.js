@@ -1,5 +1,4 @@
-function ServerSideOpts(){
-  this.mapType = mapType
+function UserOpts(mainMenu){
   this.gpx = gpx
   this.trackToDisplay = trackToDisplay
   this.trackName = trackName
@@ -14,14 +13,29 @@ function ServerSideOpts(){
   this.localityLon = null
   if(typeof(localityLon) != 'undefined')
     this.localityLon = localityLon
+    
+   if(localStorage.getItem('mapType'))
+    this.mapType = localStorage.getItem('mapType')
+   else
+    this.mapType = 'C'
+   
+   this.changeMapTypeTo = function(maptype){
+       this.mapType = maptype
+       localStorage.setItem('mapType', maptype)
+       this.mapSource = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+this.mapType+'/{z}/{x}/{y}.jpeg'
+        mainMenu.showActiveMapType(this.mapType)
+  }
+   
+   this.changeMapTypeTo(this.mapType)
 }
 
 function RadarApp() {
-  this.opts = new ServerSideOpts()
-  this.leafletMap = new LeafletMap(this.opts)
+  this.mainMenu = new MainMenu()
+  this.userOpts = new UserOpts(this.mainMenu)
+  this.leafletMap = new LeafletMap(this.userOpts)
   this.positionHash = new L.Hash(this.leafletMap.map);
-  this.popups = new Popups(this.opts.openErrorMessagePopup)
-  this.timeline = new Timeline(this.leafletMap.map, this.opts)
+  this.popups = new Popups(this.userOpts.openErrorMessagePopup)
+  this.timeline = new Timeline(this.leafletMap.map, this.userOpts)
 }
 
 function Popups(openErrorMessagePopup){
@@ -44,11 +58,28 @@ function Popups(openErrorMessagePopup){
   });  
 }
 
+function MainMenu(){
+    this.turisticMapCheckbox = $('#turisticMapEnabled')
+    this.cycloMapCheckbox = $('#cycloMapEnabled')
+    
+    this.showActiveMapType = function(mapType){
+        if(mapType == 'C'){
+            this.turisticMapCheckbox.hide()
+            this.cycloMapCheckbox.show()
+        } else {
+            this.turisticMapCheckbox.show()
+            this.cycloMapCheckbox.hide()            
+        }
+    }
+    
+    this.showActiveMapType()
+}
+
 function LeafletMap(opts){
   this.map = new L.Map('map', {minZoom: 7, maxZoom: 15});
   this.opts = opts
 
-  basemapLayer = new L.TileLayer('http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+mapType+'/{z}/{x}/{y}.jpeg', {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
+  this.basemapLayer = new L.TileLayer(this.opts.mapSource, {attribution: '(c) SHMÚ.sk, freemap.sk, openstreetmap.org contributors'});
 
   if (this.opts.gpx){
       var lotLan = this.opts.trackToDisplay.geometry.coordinates[0];
@@ -64,7 +95,12 @@ function LeafletMap(opts){
         this.map.setView([48.74157, 19.35118], 8);
   }
 
-  this.map.addLayer(basemapLayer); 
+  this.map.addLayer(this.basemapLayer); 
+  
+  this.changeMapType = function(mapType){
+      this.opts.changeMapTypeTo(mapType)
+      this.basemapLayer.setUrl(this.opts.mapSource)
+  }
 }
 
 
@@ -203,4 +239,4 @@ function Timeline(map, opts){
 
 }
 
-new RadarApp()
+radarApp = new RadarApp()

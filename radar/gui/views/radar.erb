@@ -27,11 +27,30 @@
       <a href="/"><img src="../images/logo.svg" style="height:100%" /></a>
     </div>
     <div id="header">
+  <div class="dropdown">
+    <button class="btn btn-success dropdown-toggle" 
+    type="button" 
+    id="dropdownMenu1" 
+    data-toggle="dropdown" 
+    aria-haspopup="true" 
+    aria-expanded="true">
+      MENU
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
       <% if defined?(unique_gpx_filename) %>
+        <li><a class="share_open" href="#share">Zdieľať</a></li>
+      <% end %>
+      <li><a class="launchGpxUpload_open" href="#oProjekte">Nahrať GPX</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a class="oProjekte_open" href="#oProjekte">O projekte</a></li>
+    </ul>
+  </div>
+      <!--<% if defined?(unique_gpx_filename) %>
         <a class="initialism share_open btn btn-success" href="#share">Zdieľať</a>
       <% end %>
       <a class="initialism launchGpxUpload_open btn btn-success" href="#launchGpxUpload">Nahrať GPX</a>
-      <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">Info</a>
+      <a class="initialism oProjekte_open btn btn-success" href="#oProjekte">Info</a>-->
     </div>
     <div id="map"></div>
     <div id="timeline"></div>
@@ -49,6 +68,7 @@
     <script src="../<%= versioned_javascript 'leaflet.restoreview' %>"></script>
     <script src="../<%= versioned_javascript 'jquery.popupoverlay' %>"></script>
     <script src="../<%= versioned_javascript 'strftime' %>"></script>
+    <script src="../<%= versioned_javascript 'bootstrap.min' %>"></script>
 
     <script>
       <%= js %>

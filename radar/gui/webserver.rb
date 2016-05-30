@@ -5,12 +5,29 @@ require 'active_support'
 require "active_support/core_ext"
 require 'erb'
 
-# take only each n-th point from large gpx files
-module Enumerable
-  def every_nth(n)
-    (n - 1).step(self.size - 1, n).map { |i| self[i] }
+class Numeric
+  def to_rad
+    self * Math::PI / 180
   end
-end 
+end
+
+# http://www.movable-type.co.uk/scripts/latlong.html
+# loc1 and loc2 are arrays of [latitude, longitude]
+def haversine_km_distance loc1, loc2
+    lat1, lon1 = loc1
+    lat1 = lat1.to_f
+    lon1 = lon1.to_f
+    lat2, lon2 = loc2
+    lat2 = lat2.to_f
+    lon2 = lon2.to_f
+    dLat = (lat2-lat1).to_rad;
+    dLon = (lon2-lon1).to_rad;
+    a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1.to_rad) * Math.cos(lat2.to_rad) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    d = 6371 * c; # Multiply by 6371 to get Kilometers
+end
 
 set :port, 1701
 set :bind, '0.0.0.0'
@@ -28,15 +45,6 @@ helpers do
 end
 
 def gpx_to_geojson gpx
-  sampling = 1
-  if gpx.size > 1500000
-    sampling = 4
-  elsif gpx.size > 1000000
-    sampling = 3
-  elsif gpx.size > 500000
-    sampling = 2
-  end
-      
   h = Hash.from_xml gpx
   trksegments = h['gpx']['trk']['trkseg']
   if(trksegments.class == Hash)
@@ -45,10 +53,20 @@ def gpx_to_geojson gpx
  
   lon_lats = []
   time = []
+  time_to_distance = {}
+  total_distance = 0.0
+  
   trksegments.each do |trkseg|
-    trkseg['trkpt'].every_nth(sampling).each do |trkpt|
+    trkseg['trkpt'].each_with_index do |trkpt, i|
       lon_lats << [trkpt['lon'], trkpt['lat']]
-      time << Time.parse(trkpt['time']).to_i*1000
+      t = Time.parse(trkpt['time']).to_i*1000
+      time << t
+      next_pt = trkseg['trkpt'][i+1]
+      if next_pt
+        distance = haversine_km_distance([trkpt['lat'], trkpt['lon']], [next_pt['lat'], next_pt['lon']])
+        total_distance += distance
+        time_to_distance[t] = total_distance.round(1)
+      end
     end
   end
 
@@ -59,7 +77,8 @@ def gpx_to_geojson gpx
       "coordinates"  => lon_lats
     },
     "properties"  => {
-      "time"  => time
+      "time"  => time,
+      "time_to_distance" => time_to_distance
     }
   }
   

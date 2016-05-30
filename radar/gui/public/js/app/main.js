@@ -98,46 +98,12 @@ function Timeline(map, opts){
       "showCustomTime": true
   };
 
-  // Setup timeline
   timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
-
-  // Setup leaflet map
-
 
   var playbackOptions = {
       playControl: true,
-      dateControl: true,
-      tickLen: 2000,
-      // layer and marker options
-      layer: {
-          pointToLayer: function(featureData, latlng) {
-              var result = {};
-
-              if (featureData && featureData.properties && featureData.properties.path_options) {
-                  result = featureData.properties.path_options;
-              }
-
-              if (!result.radius) {
-                  result.radius = 2;
-              }
-
-              result.color = '#4870B5';
-
-              return new L.CircleMarker(latlng, result);
-          }
-      },
-      marker: {
-          getPopup: function(featureData) {
-              var result = '';
-
-              if (featureData && featureData.properties && featureData.properties.title) {
-                  result = featureData.properties.title;
-              }
-
-              return result;
-          }
-      }
-
+      dateControl: false,
+      tickLen: 2000
   };
 
   playback = new L.Playback(this.map, null, onPlaybackTimeChange, playbackOptions);
@@ -156,7 +122,6 @@ function Timeline(map, opts){
   }
 
   $(".leaflet-top.leaflet-right").hide()
-  $('.leaflet-bottom.leaflet-left').hide()
   var trackAsPolyline = this.opts.trackToDisplay
   trackAsPolyline['geometry']['type'] = 'LineString'
   L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
@@ -167,6 +132,21 @@ function Timeline(map, opts){
           ms = properties.time.getTime();
           playback.setCursor(ms);
           adjustRadarImage(ms);
+          
+          var roundMs = ms - (ms % 1000)
+          var ttd = trackAsPolyline.properties.time_to_distance
+          var distance = null
+          var subtractions = 0
+          while(distance == null){     
+            distance = ttd[roundMs]
+            roundMs -= 1000
+            subtractions++
+            if(50 < subtractions)
+                break
+          }
+          if(distance){
+              $($('.content')[1]).html('Vzdialenosť: '+ distance +' km')
+          }
       }
   }
 

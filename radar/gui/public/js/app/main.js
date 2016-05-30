@@ -122,7 +122,7 @@ function Timeline(map, opts){
   }
 
   $(".leaflet-top.leaflet-right").hide()
-  var trackAsPolyline = this.opts.trackToDisplay
+  trackAsPolyline = this.opts.trackToDisplay
   trackAsPolyline['geometry']['type'] = 'LineString'
   L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
   $(".playControl button").text('Animovať trasu');
@@ -132,27 +132,33 @@ function Timeline(map, opts){
           ms = properties.time.getTime();
           playback.setCursor(ms);
           adjustRadarImage(ms);
-          
-          var roundMs = ms - (ms % 1000)
-          var ttd = trackAsPolyline.properties.time_to_distance
-          var distance = null
-          var subtractions = 0
-          while(distance == null){     
-            distance = ttd[roundMs]
-            roundMs -= 1000
-            subtractions++
-            if(50 < subtractions)
-                break
-          }
-          if(distance){
-              $($('.content')[1]).html('Vzdialenosť: '+ distance +' km')
-          }
+          updateDistanceText(ms)
       }
   }
 
   function onPlaybackTimeChange(ms) {
       timeline.setCustomTime(new Date(ms));
       adjustRadarImage(ms);
+      updateDistanceText(ms)
+  }
+  
+   function updateDistanceText(ms){
+    if(playbackTracks[0].properties.time_to_distance == null){
+        return(null)
+    }
+    var roundMs = ms - (ms % 1000)
+    var distance = null
+    var subtractions = 0
+    while(distance == null){     
+    distance = playbackTracks[0].properties.time_to_distance[roundMs]
+    roundMs -= 1000
+    subtractions++
+    if(50 < subtractions)
+        break
+    }
+    if(distance){
+        $($('.content')[1]).html('Vzdialenosť: '+ distance +' km')
+    }
   }
 
   function adjustRadarImage(ms) {

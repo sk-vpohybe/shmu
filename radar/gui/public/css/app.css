@@ -45,27 +45,7 @@
     border-color: white;
 }
 .vis.timeline .item.range {
-    background-color: #509E50;
-    background: -moz-linear-gradient( left ,
-        #2c64b0 0%,
-        #006c88 16%,
-        #00c034 33%,
-        #6cec00 50%,
-        #fcc800 66%,
-        #fc6400 83%,
-        #d80800 100%
-        );
-
-    background: -webkit-gradient(linear,  left top ,  right bottom, 
-        color-stop(0%, #2c64b0), 
-        color-stop(16%, #006c88), 
-        color-stop(33%, #00c034),           
-        color-stop(50%, #6cec00),
-        color-stop(66%, #fcc800), 
-        color-stop(83%, #fc6400), 
-        color-stop(100%, #d80800)
-        );       
-
+    background-color: #509E50;      
     color: white;
 }
 

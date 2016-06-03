@@ -54,9 +54,9 @@ helpers do
   end
 end
 
-def moving_ele_average trkseg, i
-  if(0 <= i-9 && trkseg[i+9] )
-    return trkseg[(i-9)..(i+9)].select do |pt| 
+def moving_ele_average trkpts, i
+  if(0 <= i-9 && trkpts[i+9] )
+    return trkpts[(i-9)..(i+9)].select do |pt| 
       pt['ele']
     end.collect do |pt|
       pt['ele'].to_f
@@ -84,33 +84,35 @@ def gpx_to_geojson gpx
   total_ele_down = 0.0
   prev_ele = nil
   
-  trksegments.each do |trkseg|
-    trkseg['trkpt'].each_with_index do |trkpt, i|
-      lon_lats << [trkpt['lon'], trkpt['lat']]
-      t = Time.parse(trkpt['time']).to_i*1000
-      time << t
-      next_pt = trkseg['trkpt'][i+1]
-      if next_pt
-        distance = haversine_km_distance([trkpt['lat'], trkpt['lon']], [next_pt['lat'], next_pt['lon']])
-        total_distance += distance
-        time_to_distance_and_ele[t] = [total_distance.round(1)]
-        
-        ele = moving_ele_average trkseg['trkpt'], i
-        if(ele && prev_ele)
-          ele_diff = ele - prev_ele
-          if(0 < ele_diff)
-            total_ele_up += ele_diff
-          else
-            total_ele_down += ele_diff
-          end
-          time_to_distance_and_ele[t] << total_ele_up.round(0)
-          time_to_distance_and_ele[t] << total_ele_down.round(0)
+  trkpts = trksegments.collect do |trkseg|
+    trkseg['trkpt']
+  end.flatten
+  
+  trkpts.each_with_index do |trkpt, i|
+    lon_lats << [trkpt['lon'], trkpt['lat']]
+    t = Time.parse(trkpt['time']).to_i*1000
+    time << t
+    next_pt = trkpts[i+1]
+    if next_pt
+      distance = haversine_km_distance([trkpt['lat'], trkpt['lon']], [next_pt['lat'], next_pt['lon']])
+      total_distance += distance
+      time_to_distance_and_ele[t] = [total_distance.round(1)]
+      
+      ele = moving_ele_average trkpts, i
+      if(ele && prev_ele)
+        ele_diff = ele - prev_ele
+        if(0 < ele_diff)
+          total_ele_up += ele_diff
         else
-          time_to_distance_and_ele[t] << total_ele_up.round(0)
-          time_to_distance_and_ele[t] << total_ele_down.round(0)
+          total_ele_down += ele_diff
         end
-        prev_ele = ele       
+        time_to_distance_and_ele[t] << total_ele_up.round(0)
+        time_to_distance_and_ele[t] << total_ele_down.round(0)
+      else
+        time_to_distance_and_ele[t] << total_ele_up.round(0)
+        time_to_distance_and_ele[t] << total_ele_down.round(0)
       end
+      prev_ele = ele       
     end
   end
 

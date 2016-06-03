@@ -4,6 +4,7 @@ require 'sinatra'
 require 'active_support'
 require "active_support/core_ext"
 require 'erb'
+require 'time'
 
 class Numeric
   def to_rad
@@ -53,6 +54,60 @@ helpers do
     "css/#{css}.css?" + File.mtime(File.join("public/css", "#{css}.css")).to_i.to_s
   end
 end
+
+def ele_local_mins_maxs trkpts
+
+  trkpts_len = trkpts.length
+  prev_ele = 0
+  prev_prev_ele = 0
+  
+  mins_maxs = []
+  last_pt = nil
+  last_ele = nil
+  min_ele = 80000
+  max_ele = 0
+  
+  trkpts.each_with_index do |pt, i|
+    next if i < 10 || trkpts_len < i + 10
+    ele = trkpts[i-9..i+9].select{|pt| pt['ele']}.collect{|pt| pt['ele'].to_f}.sort[3..-4].mean.round(-1)
+    
+    min_ele = ele if ele < min_ele
+    max_ele = ele if max_ele < ele
+    
+    if mins_maxs.length == 0
+      mins_maxs << [pt, ele]
+    elsif prev_prev_ele < prev_ele && prev_ele > ele # local max
+      mins_maxs << [pt, ele]
+    elsif prev_prev_ele > prev_ele && prev_ele < ele  # local min
+      mins_maxs << [pt, ele]
+    end
+    
+    if ele != last_ele
+      prev_prev_ele = prev_ele
+      prev_ele = ele
+    end
+    
+    last_ele = ele
+    last_pt = pt
+  end
+  
+  mins_maxs << [last_pt, last_ele]
+  
+  start_time = Time.parse(mins_maxs.first[0]['time']).to_i
+  end_time =  Time.parse(mins_maxs.last[0]['time']).to_i
+  ele_span = (max_ele - min_ele).to_f
+  time_span = (end_time - start_time).to_f
+  
+  mins_maxs_relative_time_and_ele = []
+  mins_maxs.each do |pt, ele|
+    t = Time.parse(pt['time']).to_i
+    relative_t = (((t - start_time)/time_span)*100).round(0)
+    relative_ele = ((ele - min_ele)/ele_span).round(2)
+    mins_maxs_relative_time_and_ele << [relative_t, relative_ele]
+  end
+  
+  mins_maxs_relative_time_and_ele
+end 
 
 def moving_ele_average trkpts, i
   if(0 <= i-9 && trkpts[i+9] )
@@ -115,6 +170,10 @@ def gpx_to_geojson gpx
       prev_ele = ele       
     end
   end
+  mins_maxs_relative_time_and_ele = []
+  if(300.0 < total_ele_up || 300.0 < total_ele_down)
+    mins_maxs_relative_time_and_ele = ele_local_mins_maxs trkpts
+  end
 
   output = {
     "type" => "Feature",
@@ -124,7 +183,8 @@ def gpx_to_geojson gpx
     },
     "properties"  => {
       "time"  => time,
-      "time_to_distance_and_ele" => time_to_distance_and_ele
+      "time_to_distance_and_ele" => time_to_distance_and_ele,
+      "mins_maxs_relative_time_and_ele" => mins_maxs_relative_time_and_ele
     }
   }
   

@@ -55,6 +55,7 @@
 
 .vis.timeline .customtime div {
     background-color: rgba(77, 217, 2, 0.48);
+    color: black;
 }
 
 body {

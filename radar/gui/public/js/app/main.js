@@ -149,19 +149,32 @@ function Timeline(map, opts){
 
   timeline.on('timechange', onCustomTimeChange);
 
-  if (gpx)
-      timeline.setCustomTime(startTime);
-  else {
+  if (gpx){
+    timeline.setCustomTime(startTime);
+    trackAsPolyline = this.opts.trackToDisplay
+    trackAsPolyline['geometry']['type'] = 'LineString'
+    L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
+    $(".playControl button").text('Animovať trasu');
+    
+    //rgba(0,0,0,1.0) 100%
+    var mins_maxs_relative_time_and_ele = playbackTracks[0].properties.mins_maxs_relative_time_and_ele
+    
+    if(mins_maxs_relative_time_and_ele && mins_maxs_relative_time_and_ele.length > 0){
+        var colors = mins_maxs_relative_time_and_ele.map(function(e){
+            return('rgba(0,140,0,'+e[1]+') '+e[0]+'%')
+        }).join(',')
+        var gradient = '-webkit-linear-gradient(left , '+colors+')'
+        $('.vis.timeline .item.range').css({'background': gradient, 'color': 'black'})        
+    }
+
+  } else {
       timeline.setCustomTime(endTime);
       adjustRadarImage(endTime - 1000 * 60 * 5);
       $('.leaflet-control-layers').hide();
   }
 
   $(".leaflet-top.leaflet-right").hide()
-  trackAsPolyline = this.opts.trackToDisplay
-  trackAsPolyline['geometry']['type'] = 'LineString'
-  L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
-  $(".playControl button").text('Animovať trasu');
+
 
   function onCustomTimeChange(properties) {
       if (!playback.isPlaying()) {

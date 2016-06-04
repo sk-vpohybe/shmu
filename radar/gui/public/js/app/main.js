@@ -22,8 +22,12 @@ function UserOpts(mainMenu){
    this.changeMapTypeTo = function(maptype){
        this.mapType = maptype
        localStorage.setItem('mapType', maptype)
-       this.mapSource = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+this.mapType+'/{z}/{x}/{y}.jpeg'
-        mainMenu.showActiveMapType(this.mapType)
+       if(this.mapType == 'C' || this.mapType == 'T')
+         this.mapSource = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+this.mapType+'/{z}/{x}/{y}.jpeg'
+       else
+         this.mapSource = 'https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicGV0ZXJ2b2p0ZWsiLCJhIjoiY2lpc3V5eGNrMDA5dHc5bTAwejVuamZpYiJ9.Af2Lk6oEDNcJqGZ4Obbq_A'
+       
+       mainMenu.showActiveMapType(this.mapType)
   }
    
    this.changeMapTypeTo(this.mapType)
@@ -61,15 +65,19 @@ function Popups(openErrorMessagePopup){
 function MainMenu(){
     this.turisticMapCheckbox = $('#turisticMapEnabled')
     this.cycloMapCheckbox = $('#cycloMapEnabled')
+    this.mapboxOutdoorsMapCheckbox = $('#mapboxMapEnabled')
     
     this.showActiveMapType = function(mapType){
-        if(mapType == 'C'){
-            this.turisticMapCheckbox.hide()
+        this.mapboxOutdoorsMapCheckbox.hide()
+        this.turisticMapCheckbox.hide()
+        this.cycloMapCheckbox.hide()  
+        
+        if(mapType == 'C')
             this.cycloMapCheckbox.show()
-        } else {
+        if(mapType == 'T') 
             this.turisticMapCheckbox.show()
-            this.cycloMapCheckbox.hide()            
-        }
+        if(mapType == 'mapbox') 
+            this.mapboxOutdoorsMapCheckbox.show()
     }
     
     this.showActiveMapType()

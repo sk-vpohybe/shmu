@@ -87,7 +87,7 @@ function LeafletMap(opts){
   this.map = new L.Map('map', {minZoom: 7, maxZoom: 15});
   this.opts = opts
 
-  this.basemapLayer = new L.TileLayer(this.opts.mapSource, {attribution: '(c) SHMÚ.sk, freemap.sk, mapbox.com, openstreetmap.org contributors'});
+  this.basemapLayer = new L.TileLayer(this.opts.mapSource, {attribution: '(c) SHMÚ.sk, freemap.sk, mapbox.com, openstreetmap.org'});
 
   if (this.opts.gpx){
       var lotLan = this.opts.trackToDisplay.geometry.coordinates[0];

@@ -145,7 +145,7 @@ function Timeline(map, opts){
   timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
 
   var playbackOptions = {
-      playControl: true,
+      playControl: false,
       dateControl: false,
       tickLen: 2000
   };
@@ -156,15 +156,17 @@ function Timeline(map, opts){
   playback.setSpeed(500);
 
   timeline.on('timechange', onCustomTimeChange);
-
+  this.playOrPauseButton = new PlayOrPauseButton(playback, timeline)
+  var that = this
+  
+  $('.leaflet-control-layers').hide();
+  
   if (gpx){
     timeline.setCustomTime(startTime);
     trackAsPolyline = this.opts.trackToDisplay
     trackAsPolyline['geometry']['type'] = 'LineString'
     L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
-    $(".playControl button").text('Animovať trasu');
     
-    //rgba(0,0,0,1.0) 100%
     var mins_maxs_relative_time_and_ele = playbackTracks[0].properties.mins_maxs_relative_time_and_ele
     
     if(mins_maxs_relative_time_and_ele && mins_maxs_relative_time_and_ele.length > 0){
@@ -178,11 +180,7 @@ function Timeline(map, opts){
   } else {
       timeline.setCustomTime(endTime);
       adjustRadarImage(endTime - 1000 * 60 * 5);
-      $('.leaflet-control-layers').hide();
   }
-
-  $(".leaflet-top.leaflet-right").hide()
-
 
   function onCustomTimeChange(properties) {
       if (!playback.isPlaying()) {
@@ -197,6 +195,10 @@ function Timeline(map, opts){
       timeline.setCustomTime(new Date(ms));
       adjustRadarImage(ms);
       updateDistanceText(ms)
+      if(playback.isPlaying() && playback.getEndTime() <  ms + 10000 ){
+          playback.stop()
+          that.playOrPauseButton.refreshIcon()
+      }
   }
   
    function updateDistanceText(ms){
@@ -265,6 +267,33 @@ function Timeline(map, opts){
   }
 
 
+}
+
+function PlayOrPauseButton(playback, timeline){
+    this.button = $('#playOrPause')
+    this.refreshIcon = function(){
+        if(playback.isPlaying())
+            this.button.html('&nbsp;<i class="fa fa-pause"></i>&nbsp;')
+        else
+            this.button.html('&nbsp;<i class="fa fa-play"></i>&nbsp;')
+    }
+    
+    var that = this    
+    
+    this.button.click(function(event){
+        if(playback.isPlaying()){
+            playback.stop()
+        }
+        else {
+            if(playback.getEndTime() < playback.getTime() + 10000){
+                timeline.setCustomTime(startTime);
+                playback.setCursor(startTime.getTime());
+            }
+            
+            playback.start()
+        }
+        that.refreshIcon()
+    })   
 }
 
 radarApp = new RadarApp()

@@ -19,6 +19,8 @@
     <link href="../<%= versioned_css 'vis.min' %>" rel="stylesheet" type="text/css" />
     <link href="../<%= versioned_css 'bootstrap.min' %>" rel="stylesheet" type="text/css" />
     <link href="../<%= versioned_css 'app' %>" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
   </head>
 
@@ -28,6 +30,12 @@
     </div>
     <div id="header">
   <div class="dropdown">
+    <button class="btn btn-success" 
+    type="button"
+    id="playOrPause" >
+      &nbsp;<i class="fa fa-play"></i>&nbsp;
+    </button>
+    
     <button class="btn btn-success dropdown-toggle" 
     type="button" 
     id="dropdownMenu1" 

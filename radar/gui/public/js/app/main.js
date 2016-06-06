@@ -295,12 +295,36 @@ function ShmuImageOverlay(map){
           this.radar_overlay2.setOpacity(Math.sqrt(o2) * 0.8);
   }
   
-  this.urlAndBoundsForImage = function(timestamp){
-    var bounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
-    var tmpd = new Date(timestamp * 1000);
-    var url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
+  this.URL_ROOT = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com'
+  this.ALADIN_HOUR_CONVERTER = {0: '00', 1: '00', 2: '00',
+    3: '03', 4: '03', 5: '03',
+    6: '06', 7: '06', 8: '06',
+    9: '09', 10: '09', 11: '09',
+    12: '12', 13: '12', 14: '12',
+    15: '15', 16: '15', 17: '15',
+    18: '18', 19: '18', 20: '18',
+    21: '21', 22: '21', 23: '21',
+
+}
+
+this.RADAR_BOUNDS = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
+this.ALADIN_BOUNDS = [[47.43994,16.52446], [49.8865,22.8980]]
+this.urlAndBoundsForImage = function(timestamp){
+    var imageTime = new Date(timestamp * 1000)
+    var now = new Date()
+    if(imageTime < now){
+        var bounds = this.RADAR_BOUNDS
+        var url = this.URL_ROOT + '/radar/' + strftime('%Y%m%d', imageTime) + '/' + strftime('%Y%m%d_%H%M', imageTime) + '.gif';
+    } else {
+        var bounds = this.ALADIN_BOUNDS 
+        var hours = imageTime.getHours()
+        imageTime.setTime(imageTime.getTime() + (3*60*60*1000)) 
+        var yyyymmdd = strftime('%Y%m%d', imageTime)
+        var h = this.ALADIN_HOUR_CONVERTER[imageTime.getHours()]
+        var url = this.URL_ROOT + '/aladin/' + yyyymmdd + '/' + yyyymmdd + '-'+h+'.gif'
+    }
     return({url: url, bounds: bounds})
-  }    
+}    
 }
 
 radarApp = new RadarApp()

@@ -256,7 +256,6 @@ function ShmuImageOverlay(map){
   this.radar_overlay1 = null;
   this.radar_overlay2 = null;
 
-  radarImageBounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
 
     
   this.adjustRadarImage = function(ms) {
@@ -271,9 +270,8 @@ function ShmuImageOverlay(map){
               this.map.removeLayer(this.radar_overlay1);
 
           this.displayed_radar_overlay1_timestamp = this.upcoming_radar_overlay1_timestamp;
-          var tmpd = new Date(this.displayed_radar_overlay1_timestamp * 1000);
-          var radar_overlay1_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
-          this.radar_overlay1 = L.imageOverlay(radar_overlay1_image_url, radarImageBounds);
+          var hash = this.urlAndBoundsForImage(this.displayed_radar_overlay1_timestamp)
+          this.radar_overlay1 = L.imageOverlay(hash.url, hash.bounds);
           this.radar_overlay1.addTo(this.map);
       }
 
@@ -286,9 +284,8 @@ function ShmuImageOverlay(map){
               this.map.removeLayer(this.radar_overlay2);
 
           this.displayed_radar_overlay2_timestamp = this.upcoming_radar_overlay2_timestamp;
-          var tmpd = new Date(this.displayed_radar_overlay2_timestamp * 1000);
-          var radar_overlay2_image_url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
-          this.radar_overlay2 = L.imageOverlay(radar_overlay2_image_url, radarImageBounds);
+          var hash = this.urlAndBoundsForImage(this.displayed_radar_overlay2_timestamp)
+          this.radar_overlay2 = L.imageOverlay(hash.url, hash.bounds);
           this.radar_overlay2.addTo(this.map);
       }
 
@@ -296,6 +293,13 @@ function ShmuImageOverlay(map){
 
       if (this.radar_overlay2)
           this.radar_overlay2.setOpacity(Math.sqrt(o2) * 0.8);
+  }
+  
+  this.urlAndBoundsForImage = function(timestamp){
+    var bounds = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
+    var tmpd = new Date(timestamp * 1000);
+    var url = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/radar/' + strftime('%Y%m%d', tmpd) + '/' + strftime('%Y%m%d_%H%M', tmpd) + '.gif';
+    return({url: url, bounds: bounds})
   }    
 }
 

@@ -238,16 +238,21 @@ function Timeline(map, opts){
 
 function ToggleTransparencyButton(){
     this.button = $('#toggleTransparency')
-    this.enabled = false
+    if(localStorage.getItem('transparencyEnabled') == 'true'){
+        this.button.addClass('active')
+        var css = {'background-color': 'rgba(255,255,255,0.3)'}
+        $('#timeline').css(css)
+        $('#logo').css(css)        
+    }
     var that = this
     this.button.click(function(event){
-        if(that.enabled){
+        if(localStorage.getItem('transparencyEnabled') == 'true'){
             var css = {'background-color': 'rgba(255,255,255,0.75)'}
-            that.enabled = false
+            localStorage.setItem('transparencyEnabled', 'false')
             that.button.removeClass('active')
         } else {
             var css = {'background-color': 'rgba(255,255,255,0.3)'}
-            that.enabled = true
+            localStorage.setItem('transparencyEnabled', 'true')
             that.button.addClass('active')
         }
 

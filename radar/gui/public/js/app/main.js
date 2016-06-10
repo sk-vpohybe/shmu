@@ -113,17 +113,11 @@ function LeafletMap(opts){
 
 
 function Timeline(map, opts){
+  var ONE_HOUR =  1000*60*60
+  var FIVE_MINUTES  = 1000 * 60 * 5
   this.map = map
   this.opts = opts
   shmuOverlay = new ShmuImageOverlay(this.map)
- 
-  playbackTracks = [this.opts.trackToDisplay];
-  startTime = new Date(playbackTracks[0].properties.time[0]);
-  endTime = new Date(playbackTracks[0].properties.time[playbackTracks[0].properties.time.length - 1]);
-
-
-  // Create a DataSet with data
-  var timelineData = new vis.DataSet([{start: startTime, end: endTime, content: trackName}]);
 
   // Set timeline options
   var timelineOptions = {
@@ -134,6 +128,10 @@ function Timeline(map, opts){
       "showCustomTime": true
   };
 
+  startTime = new Date(this.opts.trackToDisplay.properties.time[0]);
+  endTime = new Date(this.opts.trackToDisplay.properties.time[this.opts.trackToDisplay.properties.time.length - 1]);
+
+  var timelineData = new vis.DataSet([{start: startTime, end: endTime, content: trackName}]);
   timeline = new vis.Timeline(document.getElementById('timeline'), timelineData, timelineOptions);
 
   var playbackOptions = {
@@ -143,8 +141,8 @@ function Timeline(map, opts){
   };
 
   playback = new L.Playback(this.map, null, onPlaybackTimeChange, playbackOptions);
-  playback.setData(playbackTracks);
-  playback.addData(playbackTracks[0]);
+  playback.setData([this.opts.trackToDisplay]);
+  playback.addData(this.opts.trackToDisplay);
   playback.setSpeed(500);
 
   timeline.on('timechange', onCustomTimeChange);
@@ -152,14 +150,14 @@ function Timeline(map, opts){
   var that = this
   
   $('.leaflet-control-layers').hide();
-  
+
   if (gpx){
     timeline.setCustomTime(startTime);
     trackAsPolyline = this.opts.trackToDisplay
     trackAsPolyline['geometry']['type'] = 'LineString'
     L.geoJson(trackAsPolyline, {color: '#8D2ACB', opacity: 0.9}).addTo(this.map);
     
-    var mins_maxs_relative_time_and_ele = playbackTracks[0].properties.mins_maxs_relative_time_and_ele
+    var mins_maxs_relative_time_and_ele = this.opts.trackToDisplay.properties.mins_maxs_relative_time_and_ele
     
     if(mins_maxs_relative_time_and_ele && mins_maxs_relative_time_and_ele.length > 0){
         var colors = mins_maxs_relative_time_and_ele.map(function(e){
@@ -168,14 +166,16 @@ function Timeline(map, opts){
         var gradient = '-webkit-linear-gradient(left , '+colors+')'
         $('.vis.timeline .item.range').css({'background': gradient, 'color': 'black'})        
     }
-
+    timeline.setWindow(startTime, endTime)
   } else {
+      var now = (new Date()).getTime()
       timeline.setCustomTime(endTime);
-      shmuOverlay.adjustRadarImage(endTime - 1000 * 60 * 5);
+      shmuOverlay.adjustRadarImage(now - FIVE_MINUTES);
+      timeline.setWindow(now - ONE_HOUR - FIVE_MINUTES, now + FIVE_MINUTES * 2)
   }
 
   var timelineInFuture = false
-  var ONE_HOUR =  1000*60*60
+
   function onCustomTimeChange(properties) {
       var now = (new Date()).getTime()
       if (!playback.isPlaying()) {
@@ -191,7 +191,7 @@ function Timeline(map, opts){
           } else {
               if(timelineInFuture){
                   timelineInFuture = false
-                  timeline.setWindow(now - ONE_HOUR * 7/6, now + ONE_HOUR/6)
+                  timeline.setWindow(now - ONE_HOUR - FIVE_MINUTES, now + FIVE_MINUTES * 2)
               }
           }
       }
@@ -207,15 +207,16 @@ function Timeline(map, opts){
       }
   }
   
+  trackToDisplay = this.opts.trackToDisplay
    function updateDistanceText(ms){
-    if(playbackTracks[0].properties.time_to_distance_and_ele == null){
+    if(trackToDisplay.properties.time_to_distance_and_ele == null){
         return(null)
     }
     var roundMs = ms - (ms % 1000)
     var distance_and_eles = null
     var subtractions = 0
     while(distance_and_eles == null){     
-    distance_and_eles = playbackTracks[0].properties.time_to_distance_and_ele[roundMs]
+    distance_and_eles = trackToDisplay.properties.time_to_distance_and_ele[roundMs]
     roundMs -= 1000
     subtractions++
     if(50 < subtractions)

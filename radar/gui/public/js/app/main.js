@@ -171,7 +171,7 @@ function Timeline(map, opts){
       var now = (new Date()).getTime()
       timeline.setCustomTime(endTime);
       shmuOverlay.adjustRadarImage(now - FIVE_MINUTES);
-      timeline.setWindow(now - ONE_HOUR - FIVE_MINUTES, now + FIVE_MINUTES * 2)
+      timeline.setWindow(now - ONE_HOUR - FIVE_MINUTES * 2, now + FIVE_MINUTES * 2)
   }
 
   var timelineInFuture = false

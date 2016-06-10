@@ -174,12 +174,26 @@ function Timeline(map, opts){
       shmuOverlay.adjustRadarImage(endTime - 1000 * 60 * 5);
   }
 
+  var timelineInFuture = false
+  var ONE_HOUR =  1000*60*60
   function onCustomTimeChange(properties) {
+      var now = (new Date()).getTime()
       if (!playback.isPlaying()) {
           ms = properties.time.getTime();
           playback.setCursor(ms);
           shmuOverlay.adjustRadarImage(ms);
           updateDistanceText(ms)
+          if(now < ms){
+              if(!timelineInFuture){
+                  timelineInFuture = true
+                  timeline.setWindow(now - ONE_HOUR, now + 24 * ONE_HOUR)
+              }
+          } else {
+              if(timelineInFuture){
+                  timelineInFuture = false
+                  timeline.setWindow(now - ONE_HOUR * 7/6, now + ONE_HOUR/6)
+              }
+          }
       }
   }
 

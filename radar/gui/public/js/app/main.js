@@ -41,6 +41,9 @@ function RadarApp() {
   this.popups = new Popups(this.userOpts.openErrorMessagePopup)
   this.timeline = new Timeline(this.leafletMap.map, this.userOpts)
   new ToggleTransparencyButton()
+
+  var disableCurrentPositionButton = this.userOpts.gpx
+  new ToggleMyPositionButton(this.leafletMap.map, disableCurrentPositionButton)
 }
 
 function Popups(openErrorMessagePopup){
@@ -234,6 +237,47 @@ function Timeline(map, opts){
         
     }
   }
+}
+
+function ToggleMyPositionButton(map, hideButton){
+    this.button = $('#toggleMyPosition')
+    this.map = map
+    this.marker = null
+    var that = this
+
+    this.enable = function(){
+        that.button.addClass('active')
+        localStorage.setItem('displayMyPosition', 'true')
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latlon = [position.coords.latitude, position.coords.longitude]
+                that.marker = L.marker(latlon)
+                that.marker.addTo(that.map);
+                that.map.setView(latlon, 10);
+            });
+        }
+    }
+
+    this.disable = function(){
+        that.button.removeClass('active')
+        localStorage.setItem('displayMyPosition', 'false')
+        if(that.marker){
+            that.map.removeLayer(that.marker)
+            that.marker = null
+        }
+    }
+
+    if(hideButton)
+        this.button.hide()
+    else if(localStorage.getItem('displayMyPosition') == 'true')
+        this.enable()     
+
+    this.button.click(function(event){
+        if(localStorage.getItem('displayMyPosition') == 'true')
+            that.disable()
+        else 
+            that.enable()
+    })
 }
 
 function ToggleTransparencyButton(){

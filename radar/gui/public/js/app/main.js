@@ -186,7 +186,7 @@ function Timeline(map, opts){
           if(now < ms){
               if(!timelineInFuture){
                   timelineInFuture = true
-                  timeline.setWindow(now - ONE_HOUR, now + 24 * ONE_HOUR)
+                  timeline.setWindow(now - ONE_HOUR * 1.5, now + 24 * ONE_HOUR)
               }
           } else {
               if(timelineInFuture){

@@ -40,6 +40,7 @@ function RadarApp() {
   this.positionHash = new L.Hash(this.leafletMap.map);
   this.popups = new Popups(this.userOpts.openErrorMessagePopup)
   this.timeline = new Timeline(this.leafletMap.map, this.userOpts)
+  new ToggleTransparencyButton()
 }
 
 function Popups(openErrorMessagePopup){
@@ -235,6 +236,26 @@ function Timeline(map, opts){
   }
 }
 
+function ToggleTransparencyButton(){
+    this.button = $('#toggleTransparency')
+    this.enabled = false
+    var that = this
+    this.button.click(function(event){
+        if(that.enabled){
+            var css = {'background-color': 'rgba(255,255,255,0.75)'}
+            that.enabled = false
+            that.button.removeClass('active')
+        } else {
+            var css = {'background-color': 'rgba(255,255,255,0.3)'}
+            that.enabled = true
+            that.button.addClass('active')
+        }
+
+        $('#timeline').css(css)
+        $('#logo').css(css)
+    })
+
+}
 function PlayOrPauseButton(playback, timeline){
     this.button = $('#playOrPause')
     this.refreshIcon = function(){

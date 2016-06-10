@@ -16,7 +16,7 @@
     left: 0;
     right: 0; 
     z-index: 1001;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.75);
 }
 
 #map {
@@ -24,7 +24,7 @@
     top: 0;
     left: 0;
     right: 0;
-    bottom: 120px;
+    bottom: 0;
 }
 
 #title_container {
@@ -34,6 +34,7 @@
 }    
 
 #timeline { 
+    background-color: rgba(255,255,255,0.75);
     height: 120px; 
     position: absolute;
     left: 0;
@@ -56,6 +57,10 @@
 .vis.timeline .customtime div {
     background-color: rgba(77, 217, 2, 0.48);
     color: black;
+}
+
+.vispanel.bottom {
+    text-shadow: 0px 0px 3px white;
 }
 
 body {

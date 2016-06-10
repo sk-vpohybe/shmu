@@ -17,7 +17,7 @@ function UserOpts(mainMenu){
    if(localStorage.getItem('mapType'))
     this.mapType = localStorage.getItem('mapType')
    else
-    this.mapType = 'mapbox'
+    this.mapType = 'C'
    
    this.changeMapTypeTo = function(maptype){
        this.mapType = maptype

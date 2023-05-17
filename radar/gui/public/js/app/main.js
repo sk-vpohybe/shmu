@@ -379,8 +379,8 @@ function ShmuImageOverlay(map){
       if (this.radar_overlay2)
           this.radar_overlay2.setOpacity(Math.sqrt(o2) * 0.8);
   }
-  
-  this.URL_ROOT = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com'
+
+  this.URL_ROOT = 'https://www.shmu.sk'
   this.ALADIN_HOUR_CONVERTER = {0: '00', 1: '00', 2: '00',
     3: '03', 4: '03', 5: '03',
     6: '06', 7: '06', 8: '06',
@@ -399,7 +399,7 @@ this.urlAndBoundsForImage = function(timestamp){
     var now = new Date()
     if(imageTime < now){
         var bounds = this.RADAR_BOUNDS
-        var url = this.URL_ROOT + '/radar/' + strftime('%Y%m%d', imageTime) + '/' + strftime('%Y%m%d_%H%M', imageTime) + '.gif';
+        var url = this.URL_ROOT + '/data/dataradary/data.1hrain/pcp.1h.' + strftime('%Y%m%d.%H%M', imageTime) + '.0.png';
     } else {
         var bounds = this.ALADIN_BOUNDS 
         var hours = imageTime.getHours()

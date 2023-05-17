@@ -23,7 +23,7 @@ function UserOpts(mainMenu){
        this.mapType = maptype
        localStorage.setItem('mapType', maptype)
        if(this.mapType == 'C' || this.mapType == 'T')
-         this.mapSource = 'http://b2a35a46-50f3-47fd-bac2-e36bbbc00175.pub.cloud.scaleway.com/freemap-sk-tiles/'+this.mapType+'/{z}/{x}/{y}.jpeg'
+         this.mapSource = 'https://nabezky.sk/map-tiles-jpg/'+this.mapType+'/{z}/{x}/{y}.jpeg'
        else
          this.mapSource = 'https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicGV0ZXJ2b2p0ZWsiLCJhIjoiY2lpc3V5eGNrMDA5dHc5bTAwejVuamZpYiJ9.Af2Lk6oEDNcJqGZ4Obbq_A'
        

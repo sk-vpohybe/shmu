@@ -392,7 +392,7 @@ function ShmuImageOverlay(map){
 
 }
 
-this.RADAR_BOUNDS = [[46.449212403852584, 16.21358871459961], [49.92602987536322, 22.70427703857422]];
+this.RADAR_BOUNDS = [[46.058153, 13.646195], [50.658881, 23.776679]];
 this.ALADIN_BOUNDS = [[47.43994,16.52446], [49.8865,22.8980]]
 this.urlAndBoundsForImage = function(timestamp){
     var imageTime = new Date(timestamp * 1000)

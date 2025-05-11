@@ -17,12 +17,12 @@ function UserOpts(mainMenu){
    if(localStorage.getItem('mapType'))
     this.mapType = localStorage.getItem('mapType')
    else
-    this.mapType = 'C'
+    this.mapType = 'K'
    
    this.changeMapTypeTo = function(maptype){
        this.mapType = maptype
        localStorage.setItem('mapType', maptype)
-       if(this.mapType == 'C' || this.mapType == 'T')
+       if(this.mapType == 'K' || this.mapType == 'T')
          this.mapSource = 'https://nabezky.sk/map-tiles-jpg/'+this.mapType+'/{z}/{x}/{y}.jpeg'
        else
          this.mapSource = 'https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicGV0ZXJ2b2p0ZWsiLCJhIjoiY2lpc3V5eGNrMDA5dHc5bTAwejVuamZpYiJ9.Af2Lk6oEDNcJqGZ4Obbq_A'
@@ -76,7 +76,7 @@ function MainMenu(){
         this.turisticMapCheckbox.hide()
         this.cycloMapCheckbox.hide()  
         
-        if(mapType == 'C')
+        if(mapType == 'K')
             this.cycloMapCheckbox.show()
         if(mapType == 'T') 
             this.turisticMapCheckbox.show()

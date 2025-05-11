@@ -399,7 +399,7 @@ this.urlAndBoundsForImage = function(timestamp){
     var now = new Date()
     if(imageTime < now){
         var bounds = this.RADAR_BOUNDS
-        var url = this.URL_ROOT + '/data/dataradary/data.1hrain/pcp.1h.' + strftime('%Y%m%d.%H%M', imageTime) + '.0.png';
+        var url = this.URL_ROOT + '/data/dataradary/data.cmax/cmax.kruh.' + strftime('%Y%m%d.%H%M', imageTime) + '.0.png';
     } else {
         var bounds = this.ALADIN_BOUNDS 
         var hours = imageTime.getHours()
